@@ -1,0 +1,105 @@
+﻿<UserControl x:Class="ProjetSI.Table3D"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:ProjetSI"
+             xmlns:objects="clr-namespace:Objects3D"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="700" d:DataContext="{d:DesignInstance {x:Type local:MainVM}, IsDesignTimeCreatable=True}" Loaded="UserControl_Loaded">
+    <Grid>
+        <Border Background="Transparent">
+            <Viewport3D x:Name="viewport" ClipToBounds="True">
+                <Viewport3D.Camera>
+                    <PerspectiveCamera FieldOfView="80" NearPlaneDistance="0" FarPlaneDistance="100"
+                                       UpDirection="0 1 0" Position="-1.37 1.00 0.625" LookDirection="10 -11.2 -8"></PerspectiveCamera>
+                </Viewport3D.Camera>
+                <ModelUIElement3D>
+                    <DirectionalLight Color="White" Direction="1 0 0"></DirectionalLight>
+                </ModelUIElement3D>
+                <ModelUIElement3D>
+                    <AmbientLight Color="DarkGray">
+                    </AmbientLight>
+                </ModelUIElement3D>
+                <ModelUIElement3D>
+                    <SpotLight Position="-1.37 2 0" Direction="0.75 -0.75 -0.5" InnerConeAngle="70" OuterConeAngle="100"></SpotLight>
+                </ModelUIElement3D>
+                <ContainerUIElement3D>
+                    <Viewport2DVisual3D>
+                        <Viewport2DVisual3D.Geometry>
+                            <MeshGeometry3D  Positions="137 0 76.25, -137 0 76.25, -137 0 -76.25, 137 0 -76.25" TextureCoordinates="1 1, 0 1, 0 0, 1 0"
+                                             TriangleIndices="1 0 2 3 2 0" Normals="0 1 0, 0 1 0, 0 1 0, 0 1 0">
+                            </MeshGeometry3D>
+                        </Viewport2DVisual3D.Geometry>
+                        <Viewport2DVisual3D.Visual>
+                            <local:Table2D x:Name="table" ClipToBounds="True" Width="{Binding Path=TableWidth}" Height="{Binding Path=TableHeight}" Background="White" DataContext="{Binding}" UpdatePos="{Binding Path=UpdatePos}"></local:Table2D>
+                        </Viewport2DVisual3D.Visual>
+                        <Viewport2DVisual3D.Material>
+                            <DiffuseMaterial Viewport2DVisual3D.IsVisualHostMaterial="True"></DiffuseMaterial>
+                        </Viewport2DVisual3D.Material>
+                    </Viewport2DVisual3D>
+                    <local:CourbeBallistique3D Rayon="0.75" x:Name="courbe" StartPoint="-137 0 0" IsHitTestVisible="False"></local:CourbeBallistique3D>
+                    <ContainerUIElement3D>
+                        
+                    </ContainerUIElement3D>
+                    <objects:TSphere P_PointDeReference="-137 2 0" P_Rayon="2" x:Name="balle" P_NbFacettesVert="40" P_NbFacettesHori="40">
+                        <objects:TSphere.P_Texture>
+                            <MaterialGroup>
+                                <DiffuseMaterial>
+                                    <DiffuseMaterial.Brush>
+                                        <RadialGradientBrush Center="0.5 0.5" RadiusX="1" RadiusY="1">
+                                            <RadialGradientBrush.GradientStops>
+                                                <GradientStop Color="White" Offset="0"></GradientStop>
+                                                <GradientStop Offset="0.3" Color="Gray"></GradientStop>
+                                                <GradientStop Offset="0.6" Color="White"></GradientStop>
+                                                <GradientStop Color="LightCyan" Offset="1"></GradientStop>
+                                            </RadialGradientBrush.GradientStops>
+                                        </RadialGradientBrush>
+                                    </DiffuseMaterial.Brush>
+                                </DiffuseMaterial>
+                                <DiffuseMaterial>
+                                    <DiffuseMaterial.Brush>
+                                        <VisualBrush>
+                                            <VisualBrush.Visual>
+                                                <Canvas Width="200" Height="200">
+                                                    <Label Width="50" Height="25"
+                                                           FontSize="12pt" Content="JBS"></Label>
+                                                </Canvas>
+                                            </VisualBrush.Visual>
+                                        </VisualBrush>
+                                    </DiffuseMaterial.Brush>
+                                </DiffuseMaterial>
+                            </MaterialGroup>
+                        </objects:TSphere.P_Texture>
+                    </objects:TSphere>
+                    <ModelUIElement3D IsHitTestVisible="False" x:Name="filet">
+                        <GeometryModel3D>
+                            <GeometryModel3D.Geometry>
+                                <MeshGeometry3D Positions="0 0 76.25, 0 15.25 76.25, 0 0 -76.25 0 15.25 -76.25" TriangleIndices="0 1 2 1 3 2"></MeshGeometry3D>
+                            </GeometryModel3D.Geometry>
+                            <GeometryModel3D.Material>
+                                <MaterialGroup>
+                                    <DiffuseMaterial>
+                                        <DiffuseMaterial.Brush>
+                                            <SolidColorBrush Color="Gray" Opacity="0.5"></SolidColorBrush>
+                                        </DiffuseMaterial.Brush>
+                                    </DiffuseMaterial>
+                                </MaterialGroup>
+                            </GeometryModel3D.Material>
+                            <GeometryModel3D.BackMaterial>
+                                <DiffuseMaterial>
+                                    <DiffuseMaterial.Brush>
+                                        <SolidColorBrush Color="Gray" Opacity="0.5"></SolidColorBrush>
+                                    </DiffuseMaterial.Brush>
+                                </DiffuseMaterial>
+                            </GeometryModel3D.BackMaterial>
+                        </GeometryModel3D>
+                    </ModelUIElement3D>
+                    <ContainerUIElement3D.Transform>
+                        <ScaleTransform3D ScaleX="0.01" ScaleY="0.01" ScaleZ="0.01"></ScaleTransform3D>
+                    </ContainerUIElement3D.Transform>
+                </ContainerUIElement3D>
+            </Viewport3D>
+        </Border>
+    </Grid>
+</UserControl>

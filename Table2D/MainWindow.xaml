@@ -1,0 +1,265 @@
+﻿<Window x:Class="ProjetSI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProjetSI"
+        mc:Ignorable="d"
+        Title="Ping Pong" Height="600" Width="1200">
+    <Window.DataContext>
+        <local:MainVM></local:MainVM>
+    </Window.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="600"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel>
+            <Viewbox Grid.Column="0" VerticalAlignment="Top">
+                <local:Table3D Width="700" Height="500" Background="LightSkyBlue">
+                    <local:Table3D.MagnusRotation>
+                        <MultiBinding Converter="{StaticResource ResourceKey=angle}">
+                            <Binding Path="T"></Binding>
+                            <Binding Path="XRotation"></Binding>
+                            <Binding Path="YRotation"></Binding>
+                            <Binding Path="ZRotation"></Binding>
+                        </MultiBinding>
+                    </local:Table3D.MagnusRotation>
+                    <local:Table3D.BallPos>
+                        <MultiBinding Converter="{StaticResource pos2D}">
+                            <Binding Path="Points"></Binding>
+                            <Binding Path="T"></Binding>
+                        </MultiBinding>
+                    </local:Table3D.BallPos>
+                    <local:Table3D.Camera>
+                        <PerspectiveCamera FieldOfView="80" NearPlaneDistance="0" FarPlaneDistance="100"
+                                       UpDirection="0 1 0" Position="-1.37 0.85 0.625" LookDirection="10 -9 -7.5"></PerspectiveCamera>
+                    </local:Table3D.Camera>
+                </local:Table3D>
+            </Viewbox>
+            <StackPanel Orientation="Horizontal">
+                <StackPanel Height="150" HorizontalAlignment="Center" Orientation="Horizontal">
+                    <Rectangle Width="1" Fill="Black"></Rectangle>
+                    <Grid Height="150" Width="150">
+                        <ScrollViewer HorizontalAlignment="Stretch">
+                            <TextBlock VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Text="{Binding Path=Robot.Text}"
+                                   TextWrapping="Wrap" TextAlignment="Center"></TextBlock>
+                        </ScrollViewer>
+                    </Grid>
+                    <Grid Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" ShowGridLines="True">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <ComboBox VerticalAlignment="Center" ItemsSource="{Binding Path=Ports}" SelectedItem="{Binding Path=Robot.PortNumber}"></ComboBox>
+                        <Button Grid.Row="1" Command="{Binding Path=SetSpeed}">Régler la vitesse</Button>
+                        <Button Grid.Row="2" Command="{Binding Path=SetBallAngle}">Angle de tir</Button>
+                        <Button Grid.Row="3" Command="{Binding Path=SetDownAngle}">Angle de visée</Button>
+                        <Button Grid.Row="4" Command="{Binding Path=DropBall}">Lancer</Button>
+                        <Button Grid.Row="5" Command="{Binding Path=StartStop}" Content="{Binding Path=Robot.Started, Converter={StaticResource startStop}}"></Button>
+                    </Grid>
+                    <Rectangle Width="1" Fill="Black"></Rectangle>
+                </StackPanel>
+                <Viewbox>
+                    <local:Table3D x:Name="tableBalle" Width="{Binding Path=TableWidth}" Height="{Binding Path=TableHeight}" Background="White" CourbeRayon="0">
+                        <local:Table3D.MagnusRotation>
+                            <MultiBinding Converter="{StaticResource ResourceKey=angle}">
+                                <Binding Path="T"></Binding>
+                                <Binding Path="XRotation"></Binding>
+                                <Binding Path="YRotation"></Binding>
+                                <Binding Path="ZRotation"></Binding>
+                            </MultiBinding>
+                        </local:Table3D.MagnusRotation>
+                        <local:Table3D.BallPos>
+                            <MultiBinding Converter="{StaticResource pos2D}">
+                                <Binding Path="Points"></Binding>
+                                <Binding Path="T"></Binding>
+                            </MultiBinding>
+                        </local:Table3D.BallPos>
+                        <local:Table3D.Camera>
+                            <OrthographicCamera Width="0.15" NearPlaneDistance="0" FarPlaneDistance="100"
+                                       UpDirection="0 1 0" LookDirection="0 -1e-3 -0.1">
+                                <OrthographicCamera.Position>
+                                    <MultiBinding Converter="{StaticResource pos2D}" ConverterParameter="m">
+                                        <Binding Path="Points"></Binding>
+                                        <Binding Path="T"></Binding>
+                                    </MultiBinding>
+                                </OrthographicCamera.Position>
+                                <OrthographicCamera.Transform>
+                                    <TranslateTransform3D OffsetX="-1.37"
+                                                          OffsetY="0.02"
+                                                          OffsetZ="0.1">
+                                    </TranslateTransform3D>
+                                </OrthographicCamera.Transform>
+                            </OrthographicCamera>
+                        </local:Table3D.Camera>
+                    </local:Table3D>
+                </Viewbox>
+            </StackPanel>
+        </StackPanel>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="176"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+            <Viewbox>
+                <local:Table3D Width="{Binding Path=TableWidth}" Height="{Binding Path=TableHeight}" Background="LightSkyBlue">
+                    <local:Table3D.MagnusRotation>
+                        <MultiBinding Converter="{StaticResource ResourceKey=angle}">
+                            <Binding Path="T"></Binding>
+                            <Binding Path="XRotation"></Binding>
+                            <Binding Path="YRotation"></Binding>
+                            <Binding Path="ZRotation"></Binding>
+                        </MultiBinding>
+                    </local:Table3D.MagnusRotation>
+                    <local:Table3D.BallPos>
+                        <MultiBinding Converter="{StaticResource pos2D}">
+                            <Binding Path="Points"></Binding>
+                            <Binding Path="T"></Binding>
+                        </MultiBinding>
+                    </local:Table3D.BallPos>
+                    <local:Table3D.Camera>
+                        <OrthographicCamera Width="2.76" NearPlaneDistance="0" FarPlaneDistance="100"
+                                       UpDirection="0 -1 0" Position="0 1 0" LookDirection="0 -1 1e-5"></OrthographicCamera>
+                    </local:Table3D.Camera>
+                </local:Table3D>
+            </Viewbox>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="0.7*"/>
+                </Grid.ColumnDefinitions>
+                <Viewbox ClipToBounds="True">
+                    <Grid>
+                        <local:Table3D Width="{Binding Path=TableWidth}" Height="{Binding Path=TableHeight}" FiletVisibility="Hidden">
+                            <local:Table3D.MagnusRotation>
+                                <MultiBinding Converter="{StaticResource ResourceKey=angle}">
+                                    <Binding Path="T"></Binding>
+                                    <Binding Path="XRotation"></Binding>
+                                    <Binding Path="YRotation"></Binding>
+                                    <Binding Path="ZRotation"></Binding>
+                                </MultiBinding>
+                            </local:Table3D.MagnusRotation>
+                            <local:Table3D.BallPos>
+                                <MultiBinding Converter="{StaticResource pos2D}">
+                                    <Binding Path="Points"></Binding>
+                                    <Binding Path="T"></Binding>
+                                </MultiBinding>
+                            </local:Table3D.BallPos>
+                            <local:Table3D.Camera>
+                                <OrthographicCamera Position="0 0 0.625" LookDirection="0 0 -0.625" Width="2.8" FarPlaneDistance="100" NearPlaneDistance="0">
+                                    <OrthographicCamera.Transform>
+                                        <Transform3DGroup>
+                                            <RotateTransform3D CenterX="-1.37">
+                                                <RotateTransform3D.Rotation>
+                                                    <AxisAngleRotation3D Axis="0 1 0" Angle="{Binding Path=Angle, Converter={StaticResource ResourceKey=negate}}"></AxisAngleRotation3D>
+                                                </RotateTransform3D.Rotation>
+                                            </RotateTransform3D>
+                                            <RotateTransform3D CenterX="-1.37">
+                                                <RotateTransform3D.Rotation>
+                                                    <AxisAngleRotation3D Axis="0 1 0" Angle="90"></AxisAngleRotation3D>
+                                                </RotateTransform3D.Rotation>
+                                            </RotateTransform3D>
+                                        </Transform3DGroup>
+                                    </OrthographicCamera.Transform>
+                                </OrthographicCamera>
+                            </local:Table3D.Camera>
+                        </local:Table3D>
+                        <local:Filet Stroke="Black" StrokeThickness="1.5" SPoint="0 76.25" Panel.ZIndex="2">
+                            <local:Filet.DistanceFilet>
+                                <MultiBinding Converter="{StaticResource filet}">
+                                    <Binding Path="Angle"></Binding>
+                                    <Binding Path="TableWidth"></Binding>
+                                </MultiBinding>
+                            </local:Filet.DistanceFilet>
+                        </local:Filet>
+                        <Grid.RenderTransform>
+                            <TranslateTransform X="0" Y="75"></TranslateTransform>
+                        </Grid.RenderTransform>
+                    </Grid>
+                </Viewbox>
+                <Grid Grid.Column="1" ShowGridLines="True">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition Height="10"/>
+                    </Grid.RowDefinitions>
+                    <Rectangle Fill="Black" Grid.RowSpan="9"></Rectangle>
+                    <TextBlock Grid.Column="1">Vitesse du tir</TextBlock>
+                    <TextBlock Grid.Column="1" Grid.Row="1">Angle de tir</TextBlock>
+                    <Slider x:Name="speed" Grid.Column="2" Minimum="{x:Static local:Ballistique.minSpeed}" Maximum="{x:Static local:Ballistique.maxSpeed}"
+                            Value="{Binding Path=BallSpeed, Mode=TwoWay, Delay=500}"></Slider>
+                    <Slider Grid.Column="2" Grid.Row="1" Minimum="{x:Static local:Ballistique.minAngle}"
+                        Maximum="{x:Static local:Ballistique.maxAngle}"
+                        Value="{Binding Path=BallisticAngle, Mode=TwoWay, Delay=500}" x:Name="bAngle"></Slider>
+                    <TextBlock Grid.Column="2" VerticalAlignment="Center"
+                           Text="{Binding ElementName=speed, Path=Value, StringFormat=\{0:#.##\} cm/s}" HorizontalAlignment="Center"></TextBlock>
+                    <TextBlock Grid.Column="2" Grid.Row="1" VerticalAlignment="Center"
+                           Text="{Binding ElementName=bAngle, Path=Value, StringFormat=\{0:#.##\}°}"></TextBlock>
+                    <TextBlock Grid.Row="2" Grid.Column="1">Angle horizontal</TextBlock>
+                    <Slider x:Name="angle" Grid.Column="2" Grid.Row="2" Minimum="72.5" Maximum="107.5" Value="{Binding Path=Angle, Mode=TwoWay, Delay=500}"></Slider>
+                    <TextBlock Grid.Column="2" Grid.Row="2" Text="{Binding ElementName=angle, Path=Value, StringFormat=\{0:#.##\}°}"></TextBlock>
+                    <TextBlock Grid.Column="1" Grid.Row="3">Vitesse de rotation Y</TextBlock>
+                    <Slider x:Name="yrotation" Grid.Column="2" Grid.Row="3" Minimum="-50"
+                        Maximum="50"
+                        Value="{Binding Path=YRotation, Mode=TwoWay, Delay=500}"></Slider>
+                    <TextBlock Grid.Column="2" Grid.Row="3" VerticalAlignment="Bottom" Text="{Binding ElementName=yrotation, Path=Value, StringFormat=0\{0:#.##\} rd/s}"></TextBlock>
+
+                    <TextBlock Grid.Column="1" Grid.Row="4">Vitesse de rotation Z</TextBlock>
+                    <Slider x:Name="zrotation" Grid.Column="2" Grid.Row="4" Minimum="-200"
+                        Maximum="200"
+                        Value="{Binding Path=ZRotation, Mode=TwoWay, Delay=500}"></Slider>
+                    <TextBlock Grid.Column="2" Grid.Row="4" VerticalAlignment="Bottom"
+                               Text="{Binding ElementName=zrotation, Path=Value, StringFormat=0\{0:#.##\} rd/s}"></TextBlock>
+                    <TextBlock Grid.Column="1" Grid.Row="5">Vitesse d'animation</TextBlock>
+                    <Slider Grid.Column="2" Grid.Row="5" Minimum="0" Maximum="1"
+                        Value="{Binding Path=AnimationSpeed, Mode=TwoWay}"></Slider>
+                    <TextBlock Grid.Column="2" Grid.Row="5" VerticalAlignment="Bottom"
+                               Text="{Binding Path=AnimationSpeed, StringFormat=0\{0:#.##\}}"></TextBlock>                    
+                    <CheckBox Grid.Column="2" Grid.Row="6" VerticalAlignment="Center" HorizontalAlignment="Center"
+                          IsChecked="{Binding Path=TargetSelection, Mode=TwoWay}">Selection de cible</CheckBox>
+                    <Button Grid.Column="1" Grid.Row="6" Command="{Binding Path=FireBall}">Lancer</Button>
+                    <Rectangle Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2">
+                        <Rectangle.Fill>
+                            <SolidColorBrush>
+                                <SolidColorBrush.Color>
+                                    <MultiBinding Converter="{StaticResource filet}">
+                                        <Binding Path="Angle"></Binding>
+                                        <Binding Path="BallSpeed"></Binding>
+                                        <Binding Path="BallisticAngle"></Binding>
+                                        <Binding Path="XRotation"></Binding>
+                                        <Binding Path="YRotation"></Binding>
+                                        <Binding Path="ZRotation"></Binding>
+                                    </MultiBinding>
+                                </SolidColorBrush.Color>
+                            </SolidColorBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                </Grid>
+            </Grid>
+            <TextBlock Grid.Row="2" TextAlignment="Center" VerticalAlignment="Center" Height="20">
+                <TextBlock.Text>
+                    <MultiBinding Converter="{StaticResource text}">
+                        <Binding Path="BallPos"></Binding>
+                        <Binding Path="Center"></Binding>
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,21 @@
+﻿<Application x:Class="ProjetSI.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:ProjetSI"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+            <Setter Property="TextAlignment" Value="Center"></Setter>
+        </Style>
+        <local:FiletConverter x:Key="filet"></local:FiletConverter>
+        <local:TargetVisibilityConverter x:Key="inBounds"></local:TargetVisibilityConverter>
+        <local:DistanceConverter x:Key="distance"></local:DistanceConverter>
+        <local:TextConverter x:Key="text"></local:TextConverter>
+        <local:Pos2DConverter x:Key="pos2D"></local:Pos2DConverter>
+        <local:AngleTConverter x:Key="angle"></local:AngleTConverter>
+        <local:ButtonConverter True="Arrêter" False="Commencer" x:Key="startStop"></local:ButtonConverter>
+        <local:NegateConverter x:Key="negate"></local:NegateConverter>
+    </Application.Resources>
+</Application>

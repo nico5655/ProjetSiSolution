@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="ProjetSI.Table2D"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ProjetSI"
+             mc:Ignorable="d" 
+             d:DesignHeight="152.5" d:DesignWidth="274" d:DataContext="{d:DesignInstance {x:Type local:MainVM}, IsDesignTimeCreatable=True}">
+    <Grid>
+        <Viewbox>
+            <Canvas MouseDown="Canvas_MouseDown" MouseMove="Canvas_MouseMove" Width="{Binding TableWidth}" Height="{Binding TableHeight}">
+                <Canvas.Background>
+                    <ImageBrush ImageSource="table.jpg" Stretch="UniformToFill"></ImageBrush>
+                </Canvas.Background>
+                <Ellipse Visibility="Visible" Fill="Wheat" Width="5" Height="5" Canvas.Left="{Binding Center.X}"
+                         StrokeThickness="0.5" Canvas.Top="{Binding Center.Y}" Stroke="Black">
+                    <Ellipse.RenderTransform>
+                        <TranslateTransform Y="-2.5"></TranslateTransform>
+                    </Ellipse.RenderTransform>
+                </Ellipse>
+                <Ellipse Panel.ZIndex="2" Name="target" Fill="Red" Width="5" Height="5" Stroke="Black" StrokeThickness="0.5"
+                         Canvas.Left="{Binding BallPos.X}" Canvas.Top="{Binding BallPos.Y}">
+                    <Ellipse.Visibility>
+                        <MultiBinding Converter="{StaticResource inBounds}">
+                            <Binding Path="BallPos"></Binding>
+                            <Binding Path="Zone"></Binding>
+                        </MultiBinding>
+                    </Ellipse.Visibility>
+                </Ellipse>
+                <local:Angle Value="{Binding Angle}" Direction="Clockwise" Stroke="Black" Center="{Binding Center}" StartVector="0 -20"></local:Angle>
+                <local:Angle Center="{Binding Center}" Direction="Clockwise" Value="150" Stroke="YellowGreen" StrokeThickness="1.5">
+                    <local:Angle.StartVector>
+                        <MultiBinding Converter="{StaticResource ResourceKey=distance}" ConverterParameter="min">
+                            <Binding Path="BallSpeed"></Binding>
+                            <Binding Path="ZRotation"></Binding>
+                        </MultiBinding>
+                    </local:Angle.StartVector>
+                    <local:Angle.Clip>
+                        <RectangleGeometry Rect="{Binding Path=Zone}"></RectangleGeometry>
+                    </local:Angle.Clip>
+                </local:Angle>
+                <local:Angle Center="{Binding Center}" Direction="Clockwise" Value="150" Stroke="YellowGreen" StrokeThickness="1.5">
+                    <local:Angle.StartVector>
+                        <MultiBinding Converter="{StaticResource ResourceKey=distance}" ConverterParameter="max">
+                            <Binding Path="BallSpeed"></Binding>
+                            <Binding Path="ZRotation"></Binding>
+                        </MultiBinding>
+                    </local:Angle.StartVector>
+                    <local:Angle.Clip>
+                        <RectangleGeometry Rect="{Binding Path=Zone}"></RectangleGeometry>
+                    </local:Angle.Clip>
+                </local:Angle>
+            </Canvas>
+        </Viewbox>
+    </Grid>
+</UserControl>

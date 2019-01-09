@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="CasseBrique3D.models.TBaseModel">
+    <Position X="3.5" Y="2.75" Width="2" />
+    <NestedTypes>
+      <Enum Name="CasseBrique3D.models.TBaseModel.ModesAffichage" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>models\TBaseModel.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>ATEUAEAAICQgkAAAABAAAAAgAgAoQAAAEAgAgAAgBAA=</HashCode>
+      <FileName>models\TBaseModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CasseBrique3D.models.TSol">
+    <Position X="7.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAQAAAAAABAAAAAgAQgAACAAAAAAAAAkAAA=</HashCode>
+      <FileName>models\TSol.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CasseBrique3D.models.TBriqueCube">
+    <Position X="0.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAUABEAAhDAMAAAAAAAABAQgAAAAAAgEQAAAACA0CAA=</HashCode>
+      <FileName>models\TBriqueCube.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CasseBrique3D.models.TCone">
+    <Position X="6.5" Y="3.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AACwAAwAAGMBDQAQACAABAAgAAiBAAAIQgOAAAQAAAQ=</HashCode>
+      <FileName>models\TCone.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CasseBrique3D.models.TCylindre" Collapsed="true">
+    <Position X="5.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACwAAwAEHwBDAAVgSQgBBFkAAyBAAYIQAOCABQAEAQ=</HashCode>
+      <FileName>models\TCylindre.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CasseBrique3D.models.TAfficheMurale">
+    <Position X="9.25" Y="5.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAAAAACAAAAAgEAAAAAAEAAAAAAAAAgA=</HashCode>
+      <FileName>models\TAfficheMurale.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CasseBrique3D.models.TCube">
+    <Position X="11.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAjDAIAAAAAAAABAAgCAAAAAAEAAAAAAAEAAA=</HashCode>
+      <FileName>models\TCube.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CasseBrique3D.models.TCubeDetailsFace">
+    <Position X="2" Y="9.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAVgAwBACCjTEAQABwABFEigAKICAAFQCMAAAAkggg=</HashCode>
+      <FileName>models\TCubeDetailsFace.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CasseBrique3D.models.TSphere">
+    <Position X="0.5" Y="5.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAgAAACAAAAEAAAEAAAAEiCAAAAQQEAIIAAAAAAAA=</HashCode>
+      <FileName>models\TSphere.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="CasseBrique3D.models.IEnglobe">
+    <Position X="4" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>models\IEnglobe.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
