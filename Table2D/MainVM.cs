@@ -485,8 +485,24 @@ namespace ProjetSI
             get => animationSpeed;
             set
             {
-                animationSpeed = value;
-                Notify();
+                if (animationSpeed != value)
+                {
+                    if (stopwatch.IsRunning)
+                    {
+                        stopwatch.Stop();
+                        if (animationSpeed == 0)
+                            startElapsed = (int)(startElapsed / value - stopwatch.ElapsedMilliseconds);
+                        else if (value == 0)
+                            startElapsed = (int)((startElapsed + stopwatch.ElapsedMilliseconds) * animationSpeed);
+                        else
+                            startElapsed = (int)((startElapsed + stopwatch.ElapsedMilliseconds) * (animationSpeed / value) - stopwatch.ElapsedMilliseconds);
+                        animationSpeed = value;
+                        stopwatch.Start();
+                    }
+                    else
+                        animationSpeed = value;
+                    Notify();
+                }
             }
         }
 
@@ -515,18 +531,21 @@ namespace ProjetSI
         public void Start()
         {
             LoadDatas();
+            startElapsed = 0;
             stopwatch.Reset();
             stopwatch.Start();
             (FireBall as BaseCommand).OnChanged();
         }
         Stopwatch stopwatch = new Stopwatch();
+        int startElapsed = 0;
 
         private void CompositionTarget_Rendering(object sender, EventArgs e)
         {
             if (stopwatch.IsRunning)
                 if ((T + 1) >= points.Count)
                 {
-                    MainWindow.DipThread.Invoke(stopwatch.Reset, DispatcherPriority.Send);
+                    startElapsed = 0;
+                    MainWindow.DipThread.Invoke(stopwatch.Reset, DispatcherPriority.Normal);
                     T = 0;
                 }
                 else
@@ -535,19 +554,30 @@ namespace ProjetSI
                     {
                         MainWindow.DipThread.Invoke(() =>
                     {
-                        int pt = T;
-                        T = (int)(stopwatch.ElapsedMilliseconds * AnimationSpeed);
-                        try
+                        if (AnimationSpeed != 0)
                         {
-                            double y = 0;
-                            Point3D pt1 = new Point3D();
-                            Rect rect = new Rect(new Point(0, -TableHeight / 2), new Point(TableWidth, TableHeight / 2));
-                            if (T < points.Count && (y = points.GetRange(pt, T - pt).Min(p => p.Y)) <= 0 &&
-                            rect.Contains(new Point((pt1 = points.Last(p => p.Y == y)).X, pt1.Y)))
-                                player.Play();
+                            int pt = T;
+                            T = (int)((startElapsed + stopwatch.ElapsedMilliseconds) * AnimationSpeed);
+                            if (T < pt)
+                            {
+                                stopwatch.Stop();
+                                stopwatch.Start();
+                            }
+                            if (pt < T)
+                                try
+                                {
+                                    double y = 0;
+                                    Point3D pt1 = new Point3D();
+                                    Rect rect = new Rect(new Point(0, -TableHeight / 2), new Point(TableWidth, TableHeight / 2));
+                                    if (T < points.Count && (y = points.GetRange(pt, T - pt).Min(p => p.Y)) <= 0 &&
+                                    rect.Contains(new Point((pt1 = points.Last(p => p.Y == y)).X, pt1.Y)))
+                                        player.Play();
+                                }
+                                catch (InvalidOperationException) { }
                         }
-                        catch (InvalidOperationException) { }
-                    }, DispatcherPriority.Send);
+                        else if (t != startElapsed)
+                            T = startElapsed;
+                    }, DispatcherPriority.Normal);
                     }
                     catch { }
                 }

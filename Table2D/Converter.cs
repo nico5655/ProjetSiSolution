@@ -143,7 +143,7 @@ namespace ProjetSI
                 if (parameter is string)
                 {
                     if (parameter.ToString().Contains("m"))
-                        pt = new Point3D(pt.X / 100, pt.Y / 100, pt.Y / 100);
+                        pt = new Point3D(pt.X / 100, pt.Y / 100, pt.Z / 100);
                 }
                 return pt;
             }
