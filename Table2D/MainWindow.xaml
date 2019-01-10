@@ -20,9 +20,7 @@
                     <local:Table3D.MagnusRotation>
                         <MultiBinding Converter="{StaticResource ResourceKey=angle}">
                             <Binding Path="T"></Binding>
-                            <Binding Path="XRotation"></Binding>
-                            <Binding Path="YRotation"></Binding>
-                            <Binding Path="ZRotation"></Binding>
+                            <Binding Path="Omegas"></Binding>
                         </MultiBinding>
                     </local:Table3D.MagnusRotation>
                     <local:Table3D.BallPos>
@@ -69,9 +67,7 @@
                         <local:Table3D.MagnusRotation>
                             <MultiBinding Converter="{StaticResource ResourceKey=angle}">
                                 <Binding Path="T"></Binding>
-                                <Binding Path="XRotation"></Binding>
-                                <Binding Path="YRotation"></Binding>
-                                <Binding Path="ZRotation"></Binding>
+                                <Binding Path="Omegas"></Binding>
                             </MultiBinding>
                         </local:Table3D.MagnusRotation>
                         <local:Table3D.BallPos>
@@ -112,9 +108,7 @@
                     <local:Table3D.MagnusRotation>
                         <MultiBinding Converter="{StaticResource ResourceKey=angle}">
                             <Binding Path="T"></Binding>
-                            <Binding Path="XRotation"></Binding>
-                            <Binding Path="YRotation"></Binding>
-                            <Binding Path="ZRotation"></Binding>
+                            <Binding Path="Omegas"></Binding>
                         </MultiBinding>
                     </local:Table3D.MagnusRotation>
                     <local:Table3D.BallPos>
@@ -215,8 +209,8 @@
                     <Slider x:Name="angle" Grid.Column="2" Grid.Row="2" Minimum="72.5" Maximum="107.5" Value="{Binding Path=Angle, Mode=TwoWay, Delay=500}"></Slider>
                     <TextBlock Grid.Column="2" Grid.Row="2" Text="{Binding ElementName=angle, Path=Value, StringFormat=\{0:#.##\}°}"></TextBlock>
                     <TextBlock Grid.Column="1" Grid.Row="3">Vitesse de rotation Y</TextBlock>
-                    <Slider x:Name="yrotation" Grid.Column="2" Grid.Row="3" Minimum="-50"
-                        Maximum="50"
+                    <Slider x:Name="yrotation" Grid.Column="2" Grid.Row="3" Minimum="-100"
+                        Maximum="100"
                         Value="{Binding Path=YRotation, Mode=TwoWay, Delay=500}"></Slider>
                     <TextBlock Grid.Column="2" Grid.Row="3" VerticalAlignment="Bottom" Text="{Binding ElementName=yrotation, Path=Value, StringFormat=0\{0:#.##\} rd/s}"></TextBlock>
 

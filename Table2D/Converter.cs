@@ -166,7 +166,8 @@ namespace ProjetSI
             {
 
                 t = (int)values[0];
-                speed = new Vector3D((double)values[1], (double)values[2], (double)values[3]);
+                List<Vector3D> speeds = (List<Vector3D>)values[1];
+                speed = speeds[t];
             }
             catch { }
             return GetRotation(t, speed);

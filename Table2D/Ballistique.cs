@@ -53,7 +53,7 @@ namespace ProjetSI
             double ts = t * dt;
             Vector3D dSpeed = speed * 180 / PI;
             dSpeed *= ts;
-            return new Vector3D(dSpeed.X % 360, dSpeed.Y % 360, dSpeed.Z % 360);
+            return new Vector3D(dSpeed.X % 360, dSpeed.Y % 360, -dSpeed.Z % 360);
         }
 
         public static double ToAngle(Vector v)
@@ -190,9 +190,15 @@ namespace ProjetSI
             bool result = rect.Contains(point);
             return result;
         }
-        public static List<Point3D> GetPoint3Ds(double speed, double angle, double lowAngle, Func<double, double, bool> condition, Vector3D omega)
+
+        public static object[] GetDatas(double speed, double angle, double lowAngle,
+          Vector3D omega) => GetDatas(speed, angle, lowAngle, (x, y) => x < 400 && x > -75, omega);
+
+        public static object[] GetDatas(double speed, double angle, double lowAngle, Func<double, double, bool> condition, Vector3D omega)
         {
             List<Point3D> points = new List<Point3D>();
+            List<Vector3D> speeds = new List<Vector3D>();
+            List<Vector3D> omegas = new List<Vector3D>();
             try
             {
                 MainVM vM = Application.Current.MainWindow.DataContext as MainVM;
@@ -205,6 +211,8 @@ namespace ProjetSI
                 v *= speed;
                 Point3D position = new Point3D(0, Z0(angle), 0);
                 points.Add(position);
+                speeds.Add(v);
+                omegas.Add(omega);
                 int cpt = 1;
                 do
                 {
@@ -220,12 +228,12 @@ namespace ProjetSI
                         v.Y *= -Cr;
                         v.X *= Cr;
                         v.Z *= Cr;
-                        Vector3D rotation2 = new Vector3D(0, omega.Y * 5, 0);
-                        magnus = Vector3D.CrossProduct(rotation2, v);
+                        //Vector3D rotation2 = new Vector3D(0, omega.Y * 5, 0);
+                        //magnus = Vector3D.CrossProduct(rotation2, v);
                         v += magnus * dt;
                         v.X += 2 / Sqrt(3) * omega.Z * r * Cr;
                         omega.Z *= 1 - Cr;
-                        omega.Y *= Cr;
+                        //omega.Y *= Cr;
                         position.Y = 0;
                     }
                     if (((points.Last().X < tableWidth / 2 && position.X > tableWidth / 2) || (points.Last().X > tableWidth / 2 && position.X < tableWidth / 2)) && zone.Contains(new Point(position.X, position.Z)) && position.Y < 15.25)
@@ -236,13 +244,22 @@ namespace ProjetSI
                         position.X = tableWidth / 2;
                     }
                     points.Add(position);
+                    speeds.Add(v);
+                    omegas.Add(omega);
                 } while (condition(position.X, position.Y) && cpt < 3e3);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
             }
-            return points;
+            return new object[] { points, speeds, omegas };
+        }
+
+
+        public static List<Point3D> GetPoint3Ds(double speed, double angle, double lowAngle, Func<double, double, bool> condition, Vector3D omega)
+        {
+            object[] datas = GetDatas(speed, angle, lowAngle, condition, omega);
+            return (List<Point3D>)datas[0];
         }
 
         public static double GetNLength(double speed, double angle) => GetNLength(speed, angle, Z0(angle));
