@@ -18,7 +18,7 @@ namespace ProjetSI
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if(targetType == typeof(double))
+            if (targetType == typeof(double))
             {
                 try
                 {
@@ -161,16 +161,16 @@ namespace ProjetSI
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             int t = 0;
-            Vector3D speed = new Vector3D();
+            Vector3D omega = new Vector3D();
             try
             {
 
                 t = (int)values[0];
                 List<Vector3D> speeds = (List<Vector3D>)values[1];
-                speed = speeds[t];
+                omega = speeds[t];
             }
             catch { }
-            return GetRotation(t, speed);
+            return new Vector3D(omega.X % 360, omega.Y % 360, -omega.Z % 360);
         }
 
         public object[] ConvertBack(object value, Type[] targetType, object parameter, CultureInfo culture)
