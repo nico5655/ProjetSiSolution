@@ -27,7 +27,7 @@ namespace ProjetSI
         {
             Angle = 90;
             YRotation = 0;
-            Points = GetPoint3Ds(BallSpeed, BallisticAngle, Angle, new Vector3D(XRotation, YRotation, ZRotation));
+            LoadDatas();
             CompositionTarget.Rendering += CompositionTarget_Rendering;
             try
             {
@@ -164,6 +164,8 @@ namespace ProjetSI
         internal const double ballSize = 2.5;//rayon de la cible rouge
         private int t = 0;
         private List<Point3D> points = new List<Point3D>();
+        private List<Vector3D> speeds = new List<Vector3D>();
+        private List<Vector3D> omegas = new List<Vector3D>();
         private double xRotation;
         private double yRotation;
         private double zRotation;
@@ -378,9 +380,16 @@ namespace ProjetSI
                     ballisticAngle = value;
                     Notify();
                     Notify("BallPos");
-                    Points = GetPoint3Ds(BallSpeed, BallisticAngle, Angle, new Vector3D(XRotation, YRotation, ZRotation));
                 }
             }
+        }
+
+        private void LoadDatas()
+        {
+            object[] datas = GetDatas(BallSpeed, BallisticAngle, Angle, new Vector3D(XRotation, YRotation, ZRotation));
+            Points = (List<Point3D>)datas[0];
+            Speeds = (List<Vector3D>)datas[1];
+            Omegas = (List<Vector3D>)datas[2];
         }
 
         public Point BallPos
@@ -430,7 +439,6 @@ namespace ProjetSI
                 xRotation = value;
                 Notify();
                 Notify("BallPos");
-                Points = GetPoint3Ds(BallSpeed, BallisticAngle, Angle, new Vector3D(XRotation, YRotation, ZRotation));
             }
         }
 
@@ -441,7 +449,6 @@ namespace ProjetSI
                 yRotation = value;
                 Notify();
                 Notify("BallPos");
-                Points = GetPoint3Ds(BallSpeed, BallisticAngle, Angle, new Vector3D(XRotation, YRotation, ZRotation));
             }
         }
 
@@ -452,7 +459,6 @@ namespace ProjetSI
                 zRotation = value;
                 Notify();
                 Notify("BallPos");
-                Points = GetPoint3Ds(BallSpeed, BallisticAngle, Angle, new Vector3D(XRotation, YRotation, ZRotation));
             }
         }
 
@@ -479,7 +485,43 @@ namespace ProjetSI
             get => animationSpeed;
             set
             {
-                animationSpeed = value;
+                if (animationSpeed != value)
+                {
+                    if (stopwatch.IsRunning)
+                    {
+                        stopwatch.Stop();
+                        if (animationSpeed == 0)
+                            startElapsed = (int)(startElapsed / value - stopwatch.ElapsedMilliseconds);
+                        else if (value == 0)
+                            startElapsed = (int)((startElapsed + stopwatch.ElapsedMilliseconds) * animationSpeed);
+                        else
+                            startElapsed = (int)((startElapsed + stopwatch.ElapsedMilliseconds) * (animationSpeed / value) - stopwatch.ElapsedMilliseconds);
+                        animationSpeed = value;
+                        stopwatch.Start();
+                    }
+                    else
+                        animationSpeed = value;
+                    Notify();
+                }
+            }
+        }
+
+        public List<Vector3D> Speeds
+        {
+            get => speeds;
+            set
+            {
+                speeds = value;
+                Notify();
+            }
+        }
+
+        public List<Vector3D> Omegas
+        {
+            get => omegas;
+            set
+            {
+                omegas = value;
                 Notify();
             }
         }
@@ -488,19 +530,22 @@ namespace ProjetSI
         #region methods
         public void Start()
         {
-            Points = GetPoint3Ds(BallSpeed, BallisticAngle, Angle, new Vector3D(XRotation, YRotation, ZRotation));
+            LoadDatas();
+            startElapsed = 0;
             stopwatch.Reset();
             stopwatch.Start();
             (FireBall as BaseCommand).OnChanged();
         }
         Stopwatch stopwatch = new Stopwatch();
+        int startElapsed = 0;
 
         private void CompositionTarget_Rendering(object sender, EventArgs e)
         {
             if (stopwatch.IsRunning)
                 if ((T + 1) >= points.Count)
                 {
-                    MainWindow.DipThread.Invoke(stopwatch.Reset, System.Windows.Threading.DispatcherPriority.Send);
+                    startElapsed = 0;
+                    MainWindow.DipThread.Invoke(stopwatch.Reset, DispatcherPriority.Normal);
                     T = 0;
                 }
                 else
@@ -509,19 +554,30 @@ namespace ProjetSI
                     {
                         MainWindow.DipThread.Invoke(() =>
                     {
-                        int pt = T;
-                        T = (int)(stopwatch.ElapsedMilliseconds * AnimationSpeed);
-                        try
+                        if (AnimationSpeed != 0)
                         {
-                            double y = 0;
-                            Point3D pt1 = new Point3D();
-                            Rect rect = new Rect(new Point(0, -TableHeight / 2), new Point(TableWidth, TableHeight / 2));
-                            if (T < points.Count && (y = points.GetRange(pt, T - pt).Min(p => p.Y)) <= 0 &&
-                            rect.Contains(new Point((pt1 = points.Last(p => p.Y == y)).X, pt1.Y)))
-                                player.Play();
+                            int pt = T;
+                            T = (int)((startElapsed + stopwatch.ElapsedMilliseconds) * AnimationSpeed);
+                            if (T < pt)
+                            {
+                                stopwatch.Stop();
+                                stopwatch.Start();
+                            }
+                            if (pt < T)
+                                try
+                                {
+                                    double y = 0;
+                                    Point3D pt1 = new Point3D();
+                                    Rect rect = new Rect(new Point(0, -TableHeight / 2), new Point(TableWidth, TableHeight / 2));
+                                    if (T < points.Count && (y = points.GetRange(pt, T - pt).Min(p => p.Y)) <= 0 &&
+                                    rect.Contains(new Point((pt1 = points.Last(p => p.Y == y)).X, pt1.Y)))
+                                        player.Play();
+                                }
+                                catch (InvalidOperationException) { }
                         }
-                        catch (InvalidOperationException) { }
-                    }, System.Windows.Threading.DispatcherPriority.Send);
+                        else if (t != startElapsed)
+                            T = startElapsed;
+                    }, DispatcherPriority.Normal);
                     }
                     catch { }
                 }

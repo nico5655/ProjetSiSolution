@@ -143,7 +143,7 @@ namespace ProjetSI
                 if (parameter is string)
                 {
                     if (parameter.ToString().Contains("m"))
-                        pt = new Point3D(pt.X / 100, pt.Y / 100, pt.Y / 100);
+                        pt = new Point3D(pt.X / 100, pt.Y / 100, pt.Z / 100);
                 }
                 return pt;
             }
@@ -166,7 +166,8 @@ namespace ProjetSI
             {
 
                 t = (int)values[0];
-                speed = new Vector3D((double)values[1], (double)values[2], (double)values[3]);
+                List<Vector3D> speeds = (List<Vector3D>)values[1];
+                speed = speeds[t];
             }
             catch { }
             return GetRotation(t, speed);
