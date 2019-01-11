@@ -198,7 +198,7 @@ namespace ProjetSI
         {
             List<Point3D> points = new List<Point3D>();
             List<Vector3D> speeds = new List<Vector3D>();
-            List<Vector3D> omegas = new List<Vector3D>();
+            List<Vector3D> rotations = new List<Vector3D>();
             try
             {
                 MainVM vM = Application.Current.MainWindow.DataContext as MainVM;
@@ -210,9 +210,10 @@ namespace ProjetSI
                     Sin(angle * PI / 180), -Cos(angle * PI / 180) * Cos(lowAngle * PI / 180));
                 v *= speed;
                 Point3D position = new Point3D(0, Z0(angle), 0);
+                Vector3D rotation = new Vector3D();
                 points.Add(position);
                 speeds.Add(v);
-                omegas.Add(omega);
+                rotations.Add(rotation);
                 int cpt = 1;
                 do
                 {
@@ -221,8 +222,9 @@ namespace ProjetSI
                     Vector3D magnus = a * Vector3D.CrossProduct(omega, v);
                     Vector3D ac = g + ft + magnus;
                     v += ac * dt;
-                    cpt++;
                     position += v * dt;
+                    rotation += omega * 180 / PI * dt;
+                    cpt++;
                     if (position.Y <= 0 && zone.Contains(new Point(position.X, position.Z)))
                     {
                         v.Y *= -Cr;
@@ -245,14 +247,14 @@ namespace ProjetSI
                     }
                     points.Add(position);
                     speeds.Add(v);
-                    omegas.Add(omega);
+                    rotations.Add(rotation);
                 } while (condition(position.X, position.Y) && cpt < 3e3);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
             }
-            return new object[] { points, speeds, omegas };
+            return new object[] { points, speeds, rotations };
         }
 
 
