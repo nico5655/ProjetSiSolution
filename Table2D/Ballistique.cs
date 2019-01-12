@@ -494,13 +494,14 @@ namespace ProjetSI
                         v.Y *= -Cr;
                         v.X *= Cr;
                         v.Z *= Cr;
-                        //Vector3D rotation2 = new Vector3D(0, omega.Y * 5, 0);
-                        //magnus = Vector3D.CrossProduct(rotation2, v);
-                        //omega.Y *= Cr;
-                        v += magnus * dt;
+                        v.X += 2 / Sqrt(3) * omega.Y * (1 - Cr) * r * Cr;
+                        v.Z -= 2 / Sqrt(3) * omega.Y * (1 - Cr) * r * Cr;
                         v.X += 2 / Sqrt(3) * omega.Z * r * Cr;
+                        v.Z += 2 / Sqrt(3) * omega.X * r * Cr;
+                        omega.X *= 1 - Cr;
+                        omega.Y *= Cr;
                         omega.Z *= 1 - Cr;
-                        position.Y = 0;
+                        position.Y = 0;//avoid back getting stuck in the ground.
                     }
                     if (((points.Last().X < tableWidth / 2 && position.X > tableWidth / 2) ||
                         (points.Last().X > tableWidth / 2 && position.X < tableWidth / 2)) &&

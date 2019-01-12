@@ -170,7 +170,7 @@ namespace ProjetSI
                 omega = speeds[t];
             }
             catch { }
-            return new Vector3D(omega.X % 360, omega.Y % 360, -omega.Z % 360);
+            return new Vector3D(omega.X, omega.Y, -omega.Z);
         }
 
         public object[] ConvertBack(object value, Type[] targetType, object parameter, CultureInfo culture)
