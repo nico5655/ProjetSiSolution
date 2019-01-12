@@ -390,6 +390,14 @@ namespace ProjetSI
             return vector.Length;
         }
 
+        /// <summary>
+        /// Is the shoot valid? Use "MainVM.Zone".
+        /// </summary>
+        /// <param name="speed">Ball speed (m/s).</param>
+        /// <param name="angle">Ball shoot angle (°).</param>
+        /// <param name="lowAngle">Model orientation angle (°).</param>
+        /// <param name="rotation">Ball 3D rotation (rd/s).</param>
+        /// <returns>True if the first impact point is in the Area.</returns>
         public static bool IsWorking(double speed, double angle, double lowAngle, Vector3D rotation)
         {
             List<Point3D> point3Ds = GetPoint3Ds(speed, angle, lowAngle, firstImpact, rotation);
