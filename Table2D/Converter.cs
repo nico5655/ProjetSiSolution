@@ -116,7 +116,7 @@ namespace ProjetSI
             {
                 Point p = (Point)value[0];
                 Point center = (Point)value[1];
-                Point pos = new Point(p.X - center.X, center.Y - p.Y) - new Vector(MainVM.ballSize, MainVM.ballSize);
+                Point pos = new Point(p.X - center.X, p.Y - center.Y) - new Vector(MainVM.ballSize, MainVM.ballSize);
                 return $"x={Round(pos.X, 1)}, y={Round(pos.Y, 1)}";
             }
             catch (Exception ex)

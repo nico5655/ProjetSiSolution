@@ -84,7 +84,7 @@ namespace ProjetSI
         public static double GetTigeLength(double shoutAngle)
         {
             double x = Sqrt(Pow(D, 2) + 2 * Sin(shoutAngle * PI / 180) * D * K + Pow(K, 2));
-            return x;
+            return x;//tihe len formula, calculated using Al-Kachi theorem.
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace ProjetSI
         /// <returns>Start y for shoot (cm).</returns>
         public static double Z0(double angle)
         {
-            return D * Sin(angle * PI / 180) + B;
+            return D * Sin(angle * PI / 180) + B;//z0 formula
         }
 
         /// <summary>
@@ -104,12 +104,15 @@ namespace ProjetSI
         /// <returns></returns>
         public static double ToAngle(Vector v)
         {
-            v.Normalize();
-            double angle = Acos(v.X) * 180 / PI;
-            if (v.Y < 0)
+            v.Normalize();//normalizing th vector (reducing his length to 1)
+            double angle = Acos(v.X) * 180 / PI;//there are two angles matching this x
+            if (v.Y < 0)//we use the y to know which one to return.
                 angle = 90 - angle;
             else
                 angle += 90;
+            //don't know why we were adding 90
+            //maybe to compensate for the error between Asin and Acos above without knowing it?
+            //but not sure
             return angle;
         }
 
@@ -122,7 +125,7 @@ namespace ProjetSI
         public static Vector ToVector(double angle, double length)
         {
             Vector v = new Vector(length * Sin(angle * PI / 180), -length * Cos(angle * PI / 180));
-            return v;
+            return v;//vectorial projection
         }
 
         #endregion
@@ -138,11 +141,14 @@ namespace ProjetSI
         /// <returns>False if it hits the net and true if it doesn't.</returns>
         public static bool Filet(double angle, double bAngle, double speed, double tableWidth)
         {
-            Vector v = ToVector(angle, 1);
-            v *= tableWidth / 2 / v.X;
-            double distanceFilet = v.Length;
-            double y = GetYAtLength(speed, bAngle, distanceFilet);
-            return y >= 15.25;
+            //in this old version without effects, checking if the ball hits the net is much simpler
+            Vector v = ToVector(angle, 1);//creating a vector with direction matching the angle
+            //in order to get the direction of the ball in the table plan (only defined by low angle in this version)
+            v *= tableWidth / 2 / v.X;//if the ball make and 90° angle, v.X value would be 1
+            //we created the vector from the ball startpoint to the point where the ball hit (or doesn't hit) the net
+            double distanceFilet = v.Length;//we get his length
+            double y = GetYAtLength(speed, bAngle, distanceFilet);//then we get the height of the ball at this length
+            return y >= 15.25;//if it is below the net height, then the ball hits the net
         }
 
         /// <summary>
@@ -166,7 +172,7 @@ namespace ProjetSI
         private static double GetYAtLength(double speed, double angle, double length, double z0)
         {
             List<Point> pts = GetPoints(speed, angle, (x, y1) => x < length, z0);
-            double y = pts.LastOrDefault().Y;
+            double y = pts.LastOrDefault().Y;//y of the point at this length
             return -y;
         }
 
@@ -199,29 +205,33 @@ namespace ProjetSI
         /// <returns>Points of trajectory.</returns>
         internal static List<Point> GetPoints(double speed, double angle, Func<double, double, bool> condition, double z0)
         {
+            //returns points in the 2D space
+            //include drag, but not magnus effect
             List<Point> points = new List<Point>();
             double x = 0;
-            double y = z0;
-            double vx = speed * Cos(angle * PI / 180);
+            double y = z0;//start position
+            double vx = speed * Cos(angle * PI / 180);//start speed
             double vy = speed * Sin(angle * PI / 180);
             int cpt = 1;
-            points.Add(new Point(x, -y));
+            points.Add(new Point(x, -y));//first point
             do
             {
-                x += vx * dt;
+                x += vx * dt;//adding speed to position
                 y += vy * dt;
-                double v = Sqrt(Pow(vx, 2) + Pow(vy, 2));
-                vx -= p * v * vx * dt;
-                vy -= (G + p * v * vy) * dt;
+                double v = Sqrt(Pow(vx, 2) + Pow(vy, 2));//speed value
+                vx -= p * v * vx * dt;//drag formula
+                vy -= (G + p * v * vy) * dt;//drag and gravitation
                 cpt++;
-                points.Add(new Point(x, -y));
+                points.Add(new Point(x, -y));//adding the calculated position
+                //y is negated because on the 2d figure, y coordinates go from top to bottom
+                //ball bouncing (in this less evolved version, without effects, the ball with always be on the table)
                 if (y < 0)
                 {
-                    vy *= -Cr;
-                    vx *= Cr;
+                    vy *= -Cr;//only changing speeds
+                    vx *= Cr;//bouncing is more simple without effects
                     y = 0;
-                }
-            } while (condition(x, y) && cpt < 5e3);
+                }//this version does not implement net bouncing
+            } while (condition(x, y) && cpt < 3e3);//stopping after 3 seconds or when the condition is false
             return points;
         }
 
@@ -246,8 +256,9 @@ namespace ProjetSI
             double dist = GetNLength(speed, angle, z0);
             for (double x = 0; x <= dist + dist / 2000; x += dist / 20)
             {
-                double a = 2 * Pow(speed * Cos(angle * PI / 180), 2);
+                double a = 2 * Pow(speed * Cos(angle * PI / 180), 2);//uses analytical trajectory formula y(x)
                 points.Add(new Point(x, -(-Pow(x, 2) * (G / a) + x * Tan(angle * PI / 180) + z0)));
+                //trajectory equation is possible since this version doesn't include drag
             }
             return points;
         }
@@ -271,7 +282,7 @@ namespace ProjetSI
         {
             double a = Pow(speed, 2) * Sin(2 * angle * PI / 180) / (2 * G) +
                 Sqrt(Pow(speed * speed * Sin(2 * angle * PI / 180) / (2 * G), 2) +
-                2 * z0 * Pow(speed * Cos(angle * PI / 180), 2) / G);
+                2 * z0 * Pow(speed * Cos(angle * PI / 180), 2) / G);//an analytical formula
             return a;
         }
         #endregion
@@ -288,8 +299,9 @@ namespace ProjetSI
         public static Vector GetPosition(double speed, double angle, double lowAngle, Vector3D rotation)
         {
             List<Point3D> point3Ds = GetPoint3Ds(speed, angle, lowAngle, firstImpact, rotation);
-            Point3D p = point3Ds.LastOrDefault();
-            return new Vector(p.X, p.Z);
+            //calculating trajectoy with first impact delegate
+            Point3D p = point3Ds.LastOrDefault();//last point is first impact point
+            return new Vector(p.X, p.Z);//same as get length, but it returns the vector and not only its length
         }
 
         /// <summary>
@@ -301,14 +313,18 @@ namespace ProjetSI
         /// <param name="position">Position vector (from start point to impact point in 2D table plan).</param>
         /// <returns></returns>
         public static double GetLowAngle(double angle, double speed, Vector3D rotation, Vector position)
-        {
+        {//dichotomie
+            //vector length has already been calculated
+            //we want the right direction
+            //usually we can just do an acos, but the y effect modify the ball trajectory
+            //so we must find the right angle to counterbalance the y effect
             double a = minLowAngle;
             double b = maxLowAngle;
             int cpt = 0;
             double accuracy = 1e-6;
             do
             {
-                if (position.Y > GetPosition(speed, angle, (a + b) / 2, rotation).Y)
+                if (position.Y > GetPosition(speed, angle, (a + b) / 2, rotation).Y)//using the y of the position
                     a = (a + b) / 2;
                 else
                     b = (a + b) / 2;
@@ -325,14 +341,16 @@ namespace ProjetSI
         /// <param name="rotation">Ball 3D rotation (rd/s).</param>
         /// <returns>Ball speed.</returns>
         public static double GetSpeed(double length, double angle, Vector3D rotation)
-        {
+        {//dichotomie
+            //speed matching length with angle and rotation
+            //range increase when speed increases
             double a = minSpeed;
             double b = maxSpeed;
             int cpt = 0;
             double accuracy = 1e-6;
             do
             {
-                if (length > GetLength((a + b) / 2, angle, rotation))
+                if (length > GetLength((a + b) / 2, angle, rotation))//reduce the interval
                     a = (a + b) / 2;
                 else
                     b = (a + b) / 2;
@@ -349,17 +367,19 @@ namespace ProjetSI
         /// <param name="rotation">Ball 3D rotation (rd/s).</param>
         /// <returns>Shoot angle matching these parameters.</returns>
         public static double GetAngle(double length, double speed, Vector3D rotation)
-        {
-            double a = minAngle;
+        {//dichotomie
+            //goal is to find the angle matching the range, with the speed and the rotation as parameters
+            //we know that the range increase when the angle increase
+            double a = minAngle;//angle is between a and b
             double b = maxAngle;
             double accuracy = 1e-6;
             do
             {
-                if (length > GetLength(speed, (a + b) / 2, rotation))
+                if (length > GetLength(speed, (a + b) / 2, rotation))//we reduce the interval
                     a = (a + b) / 2;
                 else
                     b = (a + b) / 2;
-            } while (Abs(a - b) > accuracy);
+            } while (Abs(a - b) > accuracy);//until it is small enough to get an accurate value
             return (a + b) / 2;
         }
 
@@ -385,8 +405,8 @@ namespace ProjetSI
         private static double GetLength(double speed, double angle, Vector3D rotation, Func<double, double, bool> condition)
         {
             List<Point3D> pts = GetPoint3Ds(speed, angle, 90, condition, rotation);
-            Point3D pt = pts.LastOrDefault();
-            Vector vector = new Vector(pt.X, pt.Z);
+            Point3D pt = pts.LastOrDefault();//last point of the trajectory
+            Vector vector = new Vector(pt.X, pt.Z);//2D vector length
             return vector.Length;
         }
 
@@ -401,12 +421,12 @@ namespace ProjetSI
         public static bool IsWorking(double speed, double angle, double lowAngle, Vector3D rotation)
         {
             List<Point3D> point3Ds = GetPoint3Ds(speed, angle, lowAngle, firstImpact, rotation);
-            Point3D pt = point3Ds.LastOrDefault();
-            Point point = new Point(pt.X, pt.Z);
+            Point3D pt = point3Ds.LastOrDefault();//last point of the trajectory is impact point
+            Point point = new Point(pt.X, pt.Z);//Converted in his 2d position on the table
             if (!(Application.Current.MainWindow.DataContext is MainVM vM))
-                return false;
-            Rect rect = vM.RelativeZone;
-            bool result = rect.Contains(point);
+                return false;//in case the programm is not fully initialized
+            Rect rect = vM.RelativeZone;//Area represents the table after the net
+            bool result = rect.Contains(point);//if the ball first impact is here, it is valid
             return result;
         }
 
@@ -433,7 +453,7 @@ namespace ProjetSI
         public static List<Point3D> GetPoint3Ds(double speed, double angle, double lowAngle, Func<double, double, bool> condition, Vector3D omega)
         {
             object[] datas = GetDatas(speed, angle, lowAngle, condition, omega);
-            return (List<Point3D>)datas[0];
+            return (List<Point3D>)datas[0];//uses get datas and returns only the points
         }
 
         /// <summary>
@@ -496,35 +516,37 @@ namespace ProjetSI
                         v.Y *= -Cr;//reducing and inverting y speed
                         v.X *= Cr;//reducing x and z speed
                         v.Z *= Cr;
-                        v.X += 2 / Sqrt(3) * omega.Y * (1 - Cr) * r * Cr;
-                        v.Z -= 2 / Sqrt(3) * omega.Y * (1 - Cr) * r * Cr;
-                        v.X += 2 / Sqrt(3) * omega.Z * r * Cr;
-                        v.Z += 2 / Sqrt(3) * omega.X * r * Cr;
-                        omega.X *= 1 - Cr;
-                        omega.Y *= Cr;
-                        omega.Z *= 1 - Cr;
-                        position.Y = 0;//avoid back getting stuck in the ground.
+                        //theoritically in a bounce, y rotation souldn't change ball speed
+                        v.X += 2 / Sqrt(3) * omega.Y * (1 - Cr) * r * Cr;//friction slightly move the rotation axis
+                        v.Z -= 2 / Sqrt(3) * omega.Y * (1 - Cr) * r * Cr;//which change the ball speed
+                        v.X += 2 / Sqrt(3) * omega.Z * r * Cr;//formula calculated with inertia momentum
+                        v.Z += 2 / Sqrt(3) * omega.X * r * Cr;//for influence of rotation on speed during bounce
+                        omega.X *= 1 - Cr;//ball loses rotation speed in x and z
+                        omega.Z *= 1 - Cr;//what is lost in rotation speed is gain in speed
+                        omega.Y *= Cr;//small reduction due to friction (same as speed)
+                        position.Y = 0;//avoid ball getting stuck in the ground.
                     }
                     if (((points.Last().X < tableWidth / 2 && position.X > tableWidth / 2) ||
                         (points.Last().X > tableWidth / 2 && position.X < tableWidth / 2)) &&
                         zone.Contains(new Point(position.X, position.Z)) && position.Y < 15.25)
-                    {
-                        v.Y *= Cr;
-                        v.X *= -Cr;
+                    {//ball bouncing on the net
+                        v.Y *= Cr;//we consider the net is made of the same materia as the table itself
+                        v.X *= -Cr;//so same speed reduction
                         v.Z *= Cr;
-                        position.X = tableWidth / 2;
+                        position.X = tableWidth / 2;//making sure the ball doesn't get stuck.
                     }
-                    points.Add(position);
-                    speeds.Add(v);
-                    rotations.Add(rotation);
+                    points.Add(position);//adding calculated position
+                    speeds.Add(v);//calculated speed
+                    rotations.Add(rotation);//and calculated position
                 } while (condition(position.X, position.Y) && cpt < 3e3);
+                //ball stops after 3 seconds or when the condition is no longer true
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                Console.WriteLine(ex);//writing error
             }
             object[] datas = new object[] { points, speeds, rotations };
-            metadatas.Add(new Metadata(datas, speed, angle, lowAngle, condition, omega));
+            metadatas.Add(new Metadata(datas, speed, angle, lowAngle, condition, omega));//adding metadatas
             return datas;
         }
         #endregion
@@ -608,12 +630,12 @@ namespace ProjetSI
         /// <summary>
         /// Default delegate in GetPoint3Ds, run the trajectory while the ball is in field of view.
         /// </summary>
-        private static Func<double, double, bool> defaultDelegate = (x, y) => x < 400 && x > -75;
+        private static readonly Func<double, double, bool> defaultDelegate = (x, y) => x < 400 && x > -75;
 
         /// <summary>
         /// Default delegate in GetLength, stop the trajectory at the first impact.
         /// </summary>
-        private static Func<double, double, bool> firstImpact = (x, y) => y > 0;
+        private static readonly Func<double, double, bool> firstImpact = (x, y) => y > 0;
         #endregion
     }
 }
