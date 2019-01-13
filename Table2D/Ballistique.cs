@@ -496,10 +496,14 @@ namespace ProjetSI
                         v.Y *= -Cr;//reducing and inverting y speed
                         v.X *= Cr;//reducing x and z speed
                         v.Z *= Cr;
-                        v += magnus * dt;
+                        v.X += 2 / Sqrt(3) * omega.Y * (1 - Cr) * r * Cr;
+                        v.Z -= 2 / Sqrt(3) * omega.Y * (1 - Cr) * r * Cr;
                         v.X += 2 / Sqrt(3) * omega.Z * r * Cr;
+                        v.Z += 2 / Sqrt(3) * omega.X * r * Cr;
+                        omega.X *= 1 - Cr;
+                        omega.Y *= Cr;
                         omega.Z *= 1 - Cr;
-                        position.Y = 0;
+                        position.Y = 0;//avoid back getting stuck in the ground.
                     }
                     if (((points.Last().X < tableWidth / 2 && position.X > tableWidth / 2) ||
                         (points.Last().X > tableWidth / 2 && position.X < tableWidth / 2)) &&

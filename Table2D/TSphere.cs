@@ -73,9 +73,13 @@ namespace Objects3D
             Transform3DGroup trs = new Transform3DGroup();
             trs.Children.Add(new TranslateTransform3D(trans));
             //if needed
-            trs.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1, 0, 0), omega.X), trs.Transform(P_PointDeReference)));
+            trs.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), 155), trs.Transform(P_PointDeReference)));
+            /*trs.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1, 0, 0), omega.X), trs.Transform(P_PointDeReference)));
             trs.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), omega.Y + 155), trs.Transform(P_PointDeReference)));
-            trs.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), omega.Z), trs.Transform(P_PointDeReference)));
+            trs.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), omega.Z), trs.Transform(P_PointDeReference)));*/
+            double value = omega.Length;
+            omega.Normalize();
+            trs.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(omega, value), trs.Transform(P_PointDeReference)));
             Transform = trs;
         }
 
