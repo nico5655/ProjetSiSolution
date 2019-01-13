@@ -458,45 +458,44 @@ namespace ProjetSI
         /// <returns></returns>
         public static object[] GetDatas(double speed, double angle, double lowAngle, Func<double, double, bool> condition, Vector3D omega)
         {
+            //get metadata matching these parameters
             Metadata metadata = metadatas.FirstOrDefault(d => d.Match(speed, angle, lowAngle, condition, omega));
-            if (metadata != null)
-                return metadata.Data;
-            List<Point3D> points = new List<Point3D>();
+            if (metadata != null)//if they are not null
+                return metadata.Data;//no calculation needed
+            List<Point3D> points = new List<Point3D>();//creating lists
             List<Vector3D> speeds = new List<Vector3D>();
             List<Vector3D> rotations = new List<Vector3D>();
             try
             {
-                MainVM vM = Application.Current.MainWindow.DataContext as MainVM;
-                double tableWidth = (vM != null) ? vM.TableWidth : 274;
-                double tableHeight = (vM != null) ? vM.TableHeight : 152.5;
+                MainVM vM = Application.Current.MainWindow.DataContext as MainVM;//defining table area
+                double tableWidth = (vM != null) ? vM.TableWidth : 274;//with main VM settings if possible
+                double tableHeight = (vM != null) ? vM.TableHeight : 152.5;//else with default settings
                 Rect zone = new Rect(new Point(0, -tableHeight / 2), new Point(tableWidth, tableHeight / 2));
+                //creating speed vector, with directions matching angles.
                 Vector3D v = new Vector3D(Cos(angle * PI / 180) * Sin(lowAngle * PI / 180),
                     Sin(angle * PI / 180), -Cos(angle * PI / 180) * Cos(lowAngle * PI / 180));
-                v *= speed;
-                Point3D position = new Point3D(0, Z0(angle), 0);
-                Vector3D rotation = new Vector3D();
-                points.Add(position);
-                speeds.Add(v);
-                rotations.Add(rotation);
-                int cpt = 1;
+                v *= speed;//setting his length to speed
+                Point3D position = new Point3D(0, Z0(angle), 0);//defining start position with z0.
+                Vector3D rotation = new Vector3D();//rotation vector
+                points.Add(position);//adding first position
+                speeds.Add(v);//first speed
+                rotations.Add(rotation);//and first rotation
+                int cpt = 1;//starting counter to 1 (not 0 since we already added one position).
                 do
                 {
-                    Vector3D g = new Vector3D(0, -G, 0);
-                    Vector3D ft = -p * v.Length * v;
-                    Vector3D magnus = a * Vector3D.CrossProduct(omega, v);
-                    Vector3D ac = g + ft + magnus;
-                    v += ac * dt;
-                    position += v * dt;
-                    rotation += omega * 180 / PI * dt;
-                    cpt++;
+                    Vector3D g = new Vector3D(0, -G, 0);//gravitation (-gy)
+                    Vector3D ft = -p * v.Length * v;//drag ((k/m).v²)
+                    Vector3D magnus = a * Vector3D.CrossProduct(omega, v);//magnus effect ((q/m).omega^v)
+                    Vector3D ac = g + ft + magnus;//acceleration
+                    v += ac * dt;//adding acceleration to speed 
+                    position += v * dt;//adding speed to position
+                    rotation += omega * 180 / PI * dt;//adding omega (rotation speed in rd/s) to rotation
+                    cpt++;//incrementing counter
                     if (position.Y <= 0 && zone.Contains(new Point(position.X, position.Z)))
-                    {
-                        v.Y *= -Cr;
-                        v.X *= Cr;
+                    {//is the ball bouncing on the table?
+                        v.Y *= -Cr;//reducing and inverting y speed
+                        v.X *= Cr;//reducing x and z speed
                         v.Z *= Cr;
-                        //Vector3D rotation2 = new Vector3D(0, omega.Y * 5, 0);
-                        //magnus = Vector3D.CrossProduct(rotation2, v);
-                        //omega.Y *= Cr;
                         v += magnus * dt;
                         v.X += 2 / Sqrt(3) * omega.Z * r * Cr;
                         omega.Z *= 1 - Cr;
