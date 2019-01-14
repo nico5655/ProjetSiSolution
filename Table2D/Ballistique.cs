@@ -519,7 +519,7 @@ namespace ProjetSI
                         //theoritically in a bounce, y rotation souldn't change ball speed
                         v.X += 2 / Sqrt(3) * omega.Y * (1 - Cr) * r * Cr;//friction slightly move the rotation axis
                         v.Z -= 2 / Sqrt(3) * omega.Y * (1 - Cr) * r * Cr;//which change the ball speed
-                        v.X += 2 / Sqrt(3) * omega.Z * r * Cr;//formula calculated with inertia momentum
+                        v.X -= 2 / Sqrt(3) * omega.Z * r * Cr;//formula calculated with inertia momentum
                         v.Z += 2 / Sqrt(3) * omega.X * r * Cr;//for influence of rotation on speed during bounce
                         omega.X *= 1 - Cr;//ball loses rotation speed in x and z
                         omega.Z *= 1 - Cr;//what is lost in rotation speed is gain in speed
@@ -630,7 +630,7 @@ namespace ProjetSI
         /// <summary>
         /// Default delegate in GetPoint3Ds, run the trajectory while the ball is in field of view.
         /// </summary>
-        private static readonly Func<double, double, bool> defaultDelegate = (x, y) => x < 400 && x > -75;
+        private static readonly Func<double, double, bool> defaultDelegate = (x, y) => x < 600 && x > -75 && y > -75;
 
         /// <summary>
         /// Default delegate in GetLength, stop the trajectory at the first impact.

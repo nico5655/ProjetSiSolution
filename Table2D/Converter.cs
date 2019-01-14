@@ -187,7 +187,7 @@ namespace ProjetSI
                 omega = speeds[t];
             }
             catch { }
-            return new Vector3D(omega.X, omega.Y, -omega.Z);
+            return omega;
         }
 
         public object[] ConvertBack(object value, Type[] targetType, object parameter, CultureInfo culture)

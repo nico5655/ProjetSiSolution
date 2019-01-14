@@ -27,12 +27,18 @@ namespace ProjetSI
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Position of the ball in the 3D space.
+        /// </summary>
         public Point3D BallPos
         {
             get { return (Point3D)GetValue(BallPosProperty); }
             set { SetValue(BallPosProperty, value); }
         }
 
+        /// <summary>
+        /// Position of the ball in the 3D space.
+        /// </summary>
         public static readonly DependencyProperty BallPosProperty =
             DependencyProperty.Register("BallPos", typeof(Point3D), typeof(Table3D), new PropertyMetadata(new Point3D(), (d, e) =>
             {
@@ -41,13 +47,18 @@ namespace ProjetSI
                 m.balle.AppliquerTransformation(new Vector3D(ballPos.X, ballPos.Y, ballPos.Z), m.MagnusRotation);
             }));
 
-
+        /// <summary>
+        /// Rotation angle of the ball.
+        /// </summary>
         public Vector3D MagnusRotation
         {
             get { return (Vector3D)GetValue(MagnusRotationProperty); }
             set { SetValue(MagnusRotationProperty, value); }
         }
 
+        /// <summary>
+        /// Rotation angle of the ball.
+        /// </summary>
         public static readonly DependencyProperty MagnusRotationProperty =
             DependencyProperty.Register("MagnusRotation", typeof(Vector3D), typeof(Table3D), new PropertyMetadata(new Vector3D(), (d, e) =>
              {
@@ -56,12 +67,18 @@ namespace ProjetSI
                  m.balle.AppliquerTransformation(new Vector3D(m.BallPos.X, m.BallPos.Y, m.BallPos.Z), omega);
              }));
 
+        /// <summary>
+        /// Camera of the Viewport3D.
+        /// </summary>
         public Camera Camera
         {
             get { return (Camera)GetValue(CameraProperty); }
             set { SetValue(CameraProperty, value); }
         }
 
+        /// <summary>
+        /// Camera of the Viewport3D.
+        /// </summary>
         public static readonly DependencyProperty CameraProperty =
             DependencyProperty.Register("Camera", typeof(Camera), typeof(Table3D), new PropertyMetadata(
                 new PerspectiveCamera(new Point3D(-1.37, 1.00, 0.625), new Vector3D(10, -11.5, -9), new Vector3D(0, 1, 0), 80),
@@ -77,7 +94,7 @@ namespace ProjetSI
             binding.Bindings.Add(new Binding("BallSpeed") { Source = DataContext });
             binding.Bindings.Add(new Binding("BallisticAngle") { Source = DataContext });
             binding.Bindings.Add(new Binding("Angle") { Source = DataContext });
-            binding.Bindings.Add(new Binding("XRotation") { Source = DataContext });
+            binding.Bindings.Add(new Binding("XRotation") { Source = DataContext });//bindings have to be set manually for 3Ds objects
             binding.Bindings.Add(new Binding("YRotation") { Source = DataContext });
             binding.Bindings.Add(new Binding("ZRotation") { Source = DataContext });
             BindingOperations.SetBinding(courbe, CourbeBallistique3D.PointsProperty, binding);
