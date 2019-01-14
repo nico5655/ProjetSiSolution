@@ -13,7 +13,9 @@ using static System.Math;
 
 namespace ProjetSI
 {
-
+    /// <summary>
+    /// Converter for the net (get the distance to the net or the validity of the shoot).
+    /// </summary>
     public class FiletConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
@@ -56,6 +58,9 @@ namespace ProjetSI
         }
     }
 
+    /// <summary>
+    /// The point is visible if it is in the area.
+    /// </summary>
     public class TargetVisibilityConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
@@ -78,6 +83,9 @@ namespace ProjetSI
         }
     }
 
+    /// <summary>
+    /// Convert speed and zRotation to the max or min distance.
+    /// </summary>
     public class DistanceConverter : IMultiValueConverter
     {
         public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
@@ -107,6 +115,9 @@ namespace ProjetSI
         }
     }
 
+    /// <summary>
+    /// Convert point to its text representation.
+    /// </summary>
     public class TextConverter : IMultiValueConverter
     {
 
@@ -116,7 +127,7 @@ namespace ProjetSI
             {
                 Point p = (Point)value[0];
                 Point center = (Point)value[1];
-                Point pos = new Point(p.X - center.X, center.Y - p.Y) - new Vector(MainVM.ballSize, MainVM.ballSize);
+                Point pos = new Point(p.X - center.X, p.Y - center.Y) - new Vector(MainVM.ballSize, MainVM.ballSize);
                 return $"x={Round(pos.X, 1)}, y={Round(pos.Y, 1)}";
             }
             catch (Exception ex)
@@ -131,6 +142,9 @@ namespace ProjetSI
         }
     }
 
+    /// <summary>
+    /// Get Position in animation from points and time.
+    /// </summary>
     public class Pos2DConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
@@ -156,6 +170,9 @@ namespace ProjetSI
         }
     }
 
+    /// <summary>
+    /// Convert rotations and time into a rotation angle.
+    /// </summary>
     public class AngleTConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
@@ -170,7 +187,7 @@ namespace ProjetSI
                 omega = speeds[t];
             }
             catch { }
-            return new Vector3D(omega.X % 360, omega.Y % 360, -omega.Z % 360);
+            return omega;
         }
 
         public object[] ConvertBack(object value, Type[] targetType, object parameter, CultureInfo culture)
@@ -179,6 +196,9 @@ namespace ProjetSI
         }
     }
 
+    /// <summary>
+    /// Base converter, is created with methods.
+    /// </summary>
     public class BaseConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -204,6 +224,9 @@ namespace ProjetSI
         }
     }
 
+    /// <summary>
+    /// Multi version of the base converter.
+    /// </summary>
     public class BaseMultiConverter : IMultiValueConverter
     {
         public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
@@ -229,6 +252,9 @@ namespace ProjetSI
         }
     }
 
+    /// <summary>
+    /// Convert bool in whatever is the value of True and False value.
+    /// </summary>
     public class ButtonConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -247,6 +273,9 @@ namespace ProjetSI
         }
     }
 
+    /// <summary>
+    /// Negate a number.
+    /// </summary>
     public class NegateConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

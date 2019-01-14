@@ -128,9 +128,9 @@
                     <ColumnDefinition/>
                     <ColumnDefinition Width="0.7*"/>
                 </Grid.ColumnDefinitions>
-                <Viewbox ClipToBounds="True">
+                <Viewbox ClipToBounds="True" Stretch="UniformToFill" Margin="2">
                     <Grid>
-                        <local:Table3D Width="{Binding Path=TableWidth}" Height="{Binding Path=TableHeight}" FiletVisibility="Hidden">
+                        <local:Table3D Width="{Binding TableWidth}" Height="195" FiletVisibility="Hidden">
                             <local:Table3D.MagnusRotation>
                                 <MultiBinding Converter="{StaticResource ResourceKey=angle}">
                                     <Binding Path="T"></Binding>
@@ -164,7 +164,7 @@
                                 </OrthographicCamera>
                             </local:Table3D.Camera>
                         </local:Table3D>
-                        <local:Filet Stroke="Black" StrokeThickness="1.5" SPoint="0 76.25" Panel.ZIndex="2">
+                        <local:Filet Stroke="Black" StrokeThickness="1.5" SPoint="0 97.7" Panel.ZIndex="2">
                             <local:Filet.DistanceFilet>
                                 <MultiBinding Converter="{StaticResource filet}">
                                     <Binding Path="Angle"></Binding>
@@ -173,7 +173,7 @@
                             </local:Filet.DistanceFilet>
                         </local:Filet>
                         <Grid.RenderTransform>
-                            <TranslateTransform X="0" Y="75"></TranslateTransform>
+                            <TranslateTransform X="0" Y="32"></TranslateTransform>
                         </Grid.RenderTransform>
                     </Grid>
                 </Viewbox>

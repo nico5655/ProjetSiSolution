@@ -11,14 +11,23 @@ using System.Threading;
 
 namespace ProjetSI
 {
+    /// <summary>
+    /// Represents the distant Arduino.
+    /// </summary>
     public class Robot : IDisposable, INotifyPropertyChanged
     {
+        /// <summary>
+        /// Create a new Robot object with default values.
+        /// </summary>
         public Robot()
         {
             Done = true;
         }
 
         private SerialPort port;
+        /// <summary>
+        /// Number of the serial port to use to communicate with the Arduino.
+        /// </summary>
         public string PortNumber
         {
             get => port?.PortName;
@@ -53,8 +62,21 @@ namespace ProjetSI
             }
         }
 
+        /// <summary>
+        /// Action to take when the transmission is done.
+        /// </summary>
         private Action action = () => { };
+
+        /// <summary>
+        /// Is the transmition done?
+        /// </summary>
         public bool Done { get; set; }
+
+        /// <summary>
+        /// Called when data is received from the Arduino.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Port_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             string line = port.ReadLine().Replace("\r", "");
@@ -85,16 +107,21 @@ namespace ProjetSI
             }
         }
 
+        /// <summary>
+        /// Write a line on the serial port and make sure it is received.
+        /// </summary>
+        /// <param name="line">Line to send.</param>
+        /// <returns></returns>
         public bool WriteLine(string line)
         {
             try
             {
-                if (!port.IsOpen)
+                if (!port.IsOpen)//can't write if it isn't open.
                     return false;
                 bool done = false;
                 action = () => done = true;
                 int cpt = 0;
-                while (!done)
+                while (!done)//while it is not received, we keep writing.
                 {
                     port.WriteLine(line);
                     Thread.Sleep(40);
@@ -110,27 +137,50 @@ namespace ProjetSI
             }
         }
 
+        /// <summary>
+        /// Sets the motors speed on the robot.
+        /// </summary>
+        /// <param name="speed">Desired speed for the ball.</param>
+        /// <returns></returns>
         public bool SetSpeed(double speed)
         {
             return WriteLine($"speed={speed.ToString().Replace(",", ".")};");
         }
 
+        /// <summary>
+        /// Sets the model servo angle on the robot.
+        /// </summary>
+        /// <param name="angle">Desired downAngle.</param>
+        /// <returns></returns>
         public bool SetDownAngle(double angle)
         {
             return WriteLine($"angle={angle.ToString().Replace(",", ".")};");
         }
 
+        /// <summary>
+        /// Sets the ball shoot angle on the model.
+        /// </summary>
+        /// <param name="angle">Ballistic shoot angle (will be converted to TigeLength).</param>
+        /// <returns></returns>
         public bool SetShootAngle(double angle)
         {
             double len = Ballistique.GetTigeLength(angle);
             return WriteLine($"length={len.ToString().Replace(",", ".")};");
         }
 
+        /// <summary>
+        /// Drops the ball (starting the shoot).
+        /// </summary>
+        /// <returns></returns>
         public bool DropBall()
         {
             return WriteLine($"fire=1;");
         }
 
+        /// <summary>
+        /// Start speed motors turn.
+        /// </summary>
+        /// <returns></returns>
         public bool Start()
         {
             try
@@ -148,6 +198,10 @@ namespace ProjetSI
             }
         }
 
+        /// <summary>
+        /// Stop speed motors.
+        /// </summary>
+        /// <returns></returns>
         public bool Stop()
         {
             try
@@ -171,6 +225,9 @@ namespace ProjetSI
         }
 
         private bool started;
+        /// <summary>
+        /// True if the speed motors are turning.
+        /// </summary>
         public bool Started
         {
             get => started; set
