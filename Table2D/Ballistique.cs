@@ -517,8 +517,8 @@ namespace ProjetSI
                         v.X *= Cr;//reducing x and z speed
                         v.Z *= Cr;
                         //theoritically in a bounce, y rotation souldn't change ball speed
-                        v.X += 2 / Sqrt(3) * omega.Y * (1 - Cr) * r * Cr;//friction slightly move the rotation axis
-                        v.Z -= 2 / Sqrt(3) * omega.Y * (1 - Cr) * r * Cr;//which change the ball speed
+                        v.X += 2 / Sqrt(3) * omega.Y * (1 - Cr) * r * Cr * (v.Z / Abs(v.Z + 1e-10));//friction slightly move the rotation axis
+                        v.Z -= 2 / Sqrt(3) * omega.Y * (1 - Cr) * r * Cr * (v.X / Abs(v.X + 1e-10));//which change the ball speed
                         v.X -= 2 / Sqrt(3) * omega.Z * r * Cr;//formula calculated with inertia momentum
                         v.Z += 2 / Sqrt(3) * omega.X * r * Cr;//for influence of rotation on speed during bounce
                         omega.X *= 1 - Cr;//ball loses rotation speed in x and z

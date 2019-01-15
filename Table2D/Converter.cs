@@ -196,6 +196,35 @@ namespace ProjetSI
         }
     }
 
+    public class SpeedConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            int t = 0;
+            Vector3D speed = new Vector3D();
+            try
+            {
+
+                t = (int)values[0];
+                List<Vector3D> speeds = (List<Vector3D>)values[1];
+                speed = speeds[t];
+            }
+            catch { }
+            if (parameter.ToString() == "x")
+                return speed.X;
+            if (parameter.ToString() == "y")
+                return speed.Y;
+            if (parameter.ToString() == "z")
+                return speed.Z;
+            return speed;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     /// <summary>
     /// Base converter, is created with methods.
     /// </summary>

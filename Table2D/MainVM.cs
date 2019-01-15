@@ -171,6 +171,7 @@ namespace ProjetSI
         private double zRotation;
         private ObservableCollection<string> ports;
         private double animationSpeed = 0.5;
+        private double fps;
         #endregion
 
         #region commands
@@ -612,6 +613,19 @@ namespace ProjetSI
                 Notify();
             }
         }
+
+        /// <summary>
+        /// Frames Per Second
+        /// </summary>
+        public double FPS
+        {
+            get => fps;
+            set
+            {
+                fps = value;
+                Notify();
+            }
+        }
         #endregion
 
         #region methods
@@ -628,15 +642,28 @@ namespace ProjetSI
         }
         Stopwatch stopwatch = new Stopwatch();
         int startElapsed = 0;
+        double LastValue = 0;
+        int calls = 0;
 
         private void CompositionTarget_Rendering(object sender, EventArgs e)
         {
             if (stopwatch.IsRunning)//if there is an ongoing animation
+            {
+                calls++;
+                if (stopwatch.ElapsedMilliseconds - LastValue > 250)
+                {
+                    FPS = 1000 / (stopwatch.ElapsedMilliseconds - LastValue) * calls;//updating frame rate
+                    LastValue = stopwatch.ElapsedMilliseconds;
+                    calls = 0;
+                }
                 if ((T + 1) >= points.Count)//if the animation is finished
                 {
                     startElapsed = 0;
                     MainWindow.DipThread.Invoke(stopwatch.Reset, DispatcherPriority.Normal);//we reset everything
                     T = 0;
+                    FPS = 0;
+                    LastValue = 0;
+                    calls = 0;
                 }
                 else
                 {
@@ -671,6 +698,7 @@ namespace ProjetSI
                     }
                     catch { }
                 }
+            }
         }
 
         SoundPlayer player;
