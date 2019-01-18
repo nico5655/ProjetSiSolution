@@ -46,16 +46,16 @@ int value = 50;
 int previous = 0;
 // the loop function runs over and over again until power down or reset
 void loop() {
-	/*Serial.println("turning begin");
-	leftShoutStepper->setSpeed(5000);
+	Serial.println("turning begin");
+	leftShoutStepper->setSpeed(120);
 	float t1 = millis();
 	leftShoutStepper->step(20000, FORWARD, DOUBLE);
 	float t2 = millis();
 	float t = (t2 - t1) / 1000;
 	float rps = (100 / t);
 	Serial.println("Turning ended in " + String(t) + "s, speed: " + String(rps) + "rps");
-	delay(5000);*/
-	if (millis() - timeold >= 10000)
+	delay(5000);
+	/*if (millis() - timeold >= 1000)
 	{
 		rps = (half_revolutions / ((millis() - timeold) / 1000.0));
 		Serial.println(String(value) + ";" + String(rps));
@@ -68,6 +68,5 @@ void loop() {
 		}
 		myMotor->setSpeed(value);
 		timeold = millis();
-		half_revolutions = 0;
-	}
+		half_revolutions = 0;*/
 }
