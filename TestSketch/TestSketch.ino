@@ -40,6 +40,7 @@ void setup() {
 	aimControlStepper->setSpeed(aimSpeed);*/
 
 	attachInterrupt(0, magnet_detect, RISING);
+	myMotor->run(FORWARD);
 }
 int value = 50;
 int previous = 0;
