@@ -39,7 +39,8 @@ void setup() {
 	bottomAngle.attach(10);
 	aimControlStepper->setSpeed(aimSpeed);*/
 
-	attachInterrupt(0, magnet_detect, RISING);
+	//attachInterrupt(0, magnet_detect, RISING);
+	myMotor->run(FORWARD);
 }
 int value = 50;
 int previous = 0;
