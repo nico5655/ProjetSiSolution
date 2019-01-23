@@ -7,6 +7,9 @@
              xmlns:objects="clr-namespace:Objects3D"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="700" d:DataContext="{d:DesignInstance {x:Type local:MainVM}, IsDesignTimeCreatable=True}" Loaded="UserControl_Loaded">
+    <UserControl.Resources>
+        <ResourceDictionary Source="3DModel.xaml"></ResourceDictionary>
+    </UserControl.Resources>
     <Grid>
         <Border Background="Transparent">
             <Viewport3D x:Name="viewport" ClipToBounds="True">
@@ -15,14 +18,7 @@
                                        UpDirection="0 1 0" Position="-1.37 1.00 0.625" LookDirection="10 -11.2 -8"></PerspectiveCamera>
                 </Viewport3D.Camera>
                 <ModelUIElement3D>
-                    <DirectionalLight Color="White" Direction="1 0 0"></DirectionalLight>
-                </ModelUIElement3D>
-                <ModelUIElement3D>
-                    <AmbientLight Color="DarkGray">
-                    </AmbientLight>
-                </ModelUIElement3D>
-                <ModelUIElement3D>
-                    <SpotLight Position="-1.37 2 0" Direction="0.75 -0.75 -0.5" InnerConeAngle="70" OuterConeAngle="100"></SpotLight>
+                    <SpotLight Position="-1.2 1 0" Color="White" Direction="1.2 -1 0" InnerConeAngle="60" OuterConeAngle="90" Range="3"></SpotLight>
                 </ModelUIElement3D>
                 <ContainerUIElement3D>
                     <Viewport2DVisual3D>
@@ -99,6 +95,21 @@
                         <ScaleTransform3D ScaleX="0.01" ScaleY="0.01" ScaleZ="0.01"></ScaleTransform3D>
                     </ContainerUIElement3D.Transform>
                 </ContainerUIElement3D>
+                <ModelVisual3D>
+                    <ModelVisual3D.Transform>
+                        <Transform3DGroup>
+                            <RotateTransform3D>
+                                <RotateTransform3D.Rotation>
+                                    <AxisAngleRotation3D Axis="0 -1 0" Angle="{Binding Path=Angle}"></AxisAngleRotation3D>
+                                </RotateTransform3D.Rotation>
+                            </RotateTransform3D>
+                            <TranslateTransform3D OffsetX="-1.323"></TranslateTransform3D>
+                        </Transform3DGroup>
+                    </ModelVisual3D.Transform>
+                    <ModelVisual3D.Children>
+                        <StaticResource ResourceKey="montage"></StaticResource>
+                    </ModelVisual3D.Children>
+                </ModelVisual3D>
             </Viewport3D>
         </Border>
     </Grid>
