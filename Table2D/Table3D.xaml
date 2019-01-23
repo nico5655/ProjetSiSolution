@@ -18,7 +18,7 @@
                                        UpDirection="0 1 0" Position="-1.37 1.00 0.625" LookDirection="10 -11.2 -8"></PerspectiveCamera>
                 </Viewport3D.Camera>
                 <ModelUIElement3D>
-                    <SpotLight Position="-1.2 1 0" Color="White" Direction="1.2 -1 0" InnerConeAngle="60" OuterConeAngle="90" Range="3"></SpotLight>
+                    <SpotLight Position="-1.2 1 0" Color="White" Direction="1.2 -1 0" InnerConeAngle="60" OuterConeAngle="80" Range="3"></SpotLight>
                 </ModelUIElement3D>
                 <ContainerUIElement3D>
                     <Viewport2DVisual3D>
@@ -95,8 +95,8 @@
                         <ScaleTransform3D ScaleX="0.01" ScaleY="0.01" ScaleZ="0.01"></ScaleTransform3D>
                     </ContainerUIElement3D.Transform>
                 </ContainerUIElement3D>
-                <ModelVisual3D>
-                    <ModelVisual3D.Transform>
+                <ContainerUIElement3D>
+                    <ContainerUIElement3D.Transform>
                         <Transform3DGroup>
                             <RotateTransform3D>
                                 <RotateTransform3D.Rotation>
@@ -105,11 +105,50 @@
                             </RotateTransform3D>
                             <TranslateTransform3D OffsetX="-1.323"></TranslateTransform3D>
                         </Transform3DGroup>
-                    </ModelVisual3D.Transform>
-                    <ModelVisual3D.Children>
-                        <StaticResource ResourceKey="montage"></StaticResource>
-                    </ModelVisual3D.Children>
-                </ModelVisual3D>
+                    </ContainerUIElement3D.Transform>
+                    <StaticResource ResourceKey="eclairage"></StaticResource>
+                    <ContainerUIElement3D>
+                        <StaticResource ResourceKey="pignon_entrainement_1"></StaticResource>
+                        <StaticResource ResourceKey="support_1"></StaticResource>
+                        <ContainerUIElement3D x:Name="structure">
+                            <ContainerUIElement3D.Transform>
+                                <Transform3DGroup>
+                                    <RotateTransform3D>
+                                        <RotateTransform3D.Rotation>
+                                            <AxisAngleRotation3D Angle="{Binding Path=Angle}" Axis="0 -1 0"></AxisAngleRotation3D>
+                                        </RotateTransform3D.Rotation>
+                                    </RotateTransform3D>
+                                    <RotateTransform3D>
+                                        <RotateTransform3D.Rotation>
+                                            <AxisAngleRotation3D Axis="0 1 0" Angle="90"></AxisAngleRotation3D>
+                                        </RotateTransform3D.Rotation>
+                                    </RotateTransform3D>
+                                </Transform3DGroup>
+                            </ContainerUIElement3D.Transform>
+                            <StaticResource ResourceKey="E9e_grosse_roue"></StaticResource>
+                            <StaticResource ResourceKey="plaque_principale_1"></StaticResource>
+                            <StaticResource ResourceKey="plaque_principale_2"></StaticResource>
+                            <StaticResource ResourceKey="support_panneau_1"></StaticResource>
+                            <StaticResource ResourceKey="truc_maxence_2"></StaticResource>
+                            <StaticResource ResourceKey="machin_tournant_"></StaticResource>
+                            <StaticResource ResourceKey="E0_pas"></StaticResource>
+                            <ContainerUIElement3D>
+                                <ContainerUIElement3D.Transform>
+                                    <TranslateTransform3D OffsetY="0.01"></TranslateTransform3D>
+                                </ContainerUIElement3D.Transform>
+                                <StaticResource ResourceKey="tige_1"></StaticResource>
+                            </ContainerUIElement3D>
+                            <StaticResource ResourceKey="truc_maxence_1"></StaticResource>
+                            <StaticResource ResourceKey="tige_filetee"></StaticResource>
+                            <ContainerUIElement3D x:Name="sommet">
+                                <StaticResource ResourceKey="BD_1"></StaticResource>
+                                <StaticResource ResourceKey="BD_2"></StaticResource>
+                                <StaticResource ResourceKey="tige_2"></StaticResource>
+                                <StaticResource ResourceKey="pivot_tige"></StaticResource>
+                            </ContainerUIElement3D>
+                        </ContainerUIElement3D>
+                    </ContainerUIElement3D>
+                </ContainerUIElement3D>
             </Viewport3D>
         </Border>
     </Grid>
