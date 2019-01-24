@@ -48,7 +48,7 @@ namespace ProjetSI
         /// <summary>
         /// B length on the model (cm).
         /// </summary>
-        const double B = 12.11;
+        const double B = 22.85;//12.11;
         /// <summary>
         /// K length on the model (cm).
         /// </summary>

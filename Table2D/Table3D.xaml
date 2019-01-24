@@ -35,10 +35,8 @@
                         </Viewport2DVisual3D.Material>
                     </Viewport2DVisual3D>
                     <local:CourbeBallistique3D Rayon="0.75" x:Name="courbe" StartPoint="-137 0 0" IsHitTestVisible="False"></local:CourbeBallistique3D>
-                    <ContainerUIElement3D>
-                        
-                    </ContainerUIElement3D>
-                    <objects:TSphere P_PointDeReference="-137 2 0" P_Rayon="2" x:Name="balle" P_NbFacettesVert="40" P_NbFacettesHori="40">
+                    
+                    <objects:TSphere IsHitTestVisible="False" P_PointDeReference="-137 2 0" P_Rayon="2" x:Name="balle" P_NbFacettesVert="40" P_NbFacettesHori="40">
                         <objects:TSphere.P_Texture>
                             <MaterialGroup>
                                 <DiffuseMaterial>
@@ -95,21 +93,22 @@
                         <ScaleTransform3D ScaleX="0.01" ScaleY="0.01" ScaleZ="0.01"></ScaleTransform3D>
                     </ContainerUIElement3D.Transform>
                 </ContainerUIElement3D>
-                <ContainerUIElement3D>
+                <ContainerUIElement3D IsHitTestVisible="False">
                     <ContainerUIElement3D.Transform>
                         <Transform3DGroup>
                             <RotateTransform3D>
                                 <RotateTransform3D.Rotation>
-                                    <AxisAngleRotation3D Axis="0 -1 0" Angle="{Binding Path=Angle}"></AxisAngleRotation3D>
+                                    <AxisAngleRotation3D Axis="0 1 0" Angle="-90"></AxisAngleRotation3D>
                                 </RotateTransform3D.Rotation>
                             </RotateTransform3D>
-                            <TranslateTransform3D OffsetX="-1.323"></TranslateTransform3D>
+                            <TranslateTransform3D OffsetX="-1.37"></TranslateTransform3D>
                         </Transform3DGroup>
                     </ContainerUIElement3D.Transform>
                     <StaticResource ResourceKey="eclairage"></StaticResource>
-                    <ContainerUIElement3D>
+                    <ContainerUIElement3D x:Name="maquette">
                         <StaticResource ResourceKey="pignon_entrainement_1"></StaticResource>
                         <StaticResource ResourceKey="support_1"></StaticResource>
+                        <StaticResource ResourceKey="E0_pas"></StaticResource>
                         <ContainerUIElement3D x:Name="structure">
                             <ContainerUIElement3D.Transform>
                                 <Transform3DGroup>
@@ -118,7 +117,7 @@
                                             <AxisAngleRotation3D Angle="{Binding Path=Angle}" Axis="0 -1 0"></AxisAngleRotation3D>
                                         </RotateTransform3D.Rotation>
                                     </RotateTransform3D>
-                                    <RotateTransform3D>
+                                    <RotateTransform3D CenterX="0" CenterY="0" CenterZ="0">
                                         <RotateTransform3D.Rotation>
                                             <AxisAngleRotation3D Axis="0 1 0" Angle="90"></AxisAngleRotation3D>
                                         </RotateTransform3D.Rotation>
@@ -126,25 +125,25 @@
                                 </Transform3DGroup>
                             </ContainerUIElement3D.Transform>
                             <StaticResource ResourceKey="E9e_grosse_roue"></StaticResource>
-                            <StaticResource ResourceKey="plaque_principale_1"></StaticResource>
-                            <StaticResource ResourceKey="plaque_principale_2"></StaticResource>
-                            <StaticResource ResourceKey="support_panneau_1"></StaticResource>
+                            <StaticResource ResourceKey="E0_pas_2"></StaticResource>
                             <StaticResource ResourceKey="truc_maxence_2"></StaticResource>
                             <StaticResource ResourceKey="machin_tournant_"></StaticResource>
-                            <StaticResource ResourceKey="E0_pas"></StaticResource>
+                            <StaticResource ResourceKey="truc_maxence_1"></StaticResource>
+                            <StaticResource ResourceKey="tige_filetee"></StaticResource>
+                            <StaticResource ResourceKey="support_panneau_1"></StaticResource>
                             <ContainerUIElement3D>
                                 <ContainerUIElement3D.Transform>
                                     <TranslateTransform3D OffsetY="0.01"></TranslateTransform3D>
                                 </ContainerUIElement3D.Transform>
                                 <StaticResource ResourceKey="tige_1"></StaticResource>
                             </ContainerUIElement3D>
-                            <StaticResource ResourceKey="truc_maxence_1"></StaticResource>
-                            <StaticResource ResourceKey="tige_filetee"></StaticResource>
+                            <StaticResource ResourceKey="plaque_principale_1"></StaticResource>
+                            <StaticResource ResourceKey="plaque_principale_2"></StaticResource>
                             <ContainerUIElement3D x:Name="sommet">
-                                <StaticResource ResourceKey="BD_1"></StaticResource>
-                                <StaticResource ResourceKey="BD_2"></StaticResource>
                                 <StaticResource ResourceKey="tige_2"></StaticResource>
                                 <StaticResource ResourceKey="pivot_tige"></StaticResource>
+                                <StaticResource ResourceKey="BD_1"></StaticResource>
+                                <StaticResource ResourceKey="BD_2"></StaticResource>
                             </ContainerUIElement3D>
                         </ContainerUIElement3D>
                     </ContainerUIElement3D>
