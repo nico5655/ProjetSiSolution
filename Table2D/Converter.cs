@@ -326,10 +326,7 @@ namespace ProjetSI
             double x = GetTigeLength(angle);
 
             double beta = GetBeta(angle);
-            Vector3D d = (x - 26) * new Vector3D(0, 0, -1);//Cos(50.2 * PI / 180), Sin(50.2 * PI / 180));
-            AxisAngleRotation3D rotation3D = new AxisAngleRotation3D(new Vector3D(1, 0, 0), 50.2);
-            RotateTransform3D rd = new RotateTransform3D(rotation3D);
-            rd.Transform(d);
+            Vector3D d = (x - 27) * new Vector3D(0, Cos(55.2 * PI / 180), -Sin(55.2 * PI / 180));
             if (parameter?.ToString() == "z")
                 return d.Z / 100;
             if (parameter?.ToString() == "y")

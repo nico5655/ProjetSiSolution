@@ -134,14 +134,14 @@
                                 <StaticResource ResourceKey="tige_1"></StaticResource>
                             </ContainerUIElement3D>
                             <StaticResource ResourceKey="plaque_principale_1"></StaticResource>
-                            <!--<StaticResource ResourceKey="plaque_principale_2"></StaticResource>-->
+                            <StaticResource ResourceKey="plaque_principale_2"></StaticResource>
                             <ContainerUIElement3D x:Name="sommet">
                                 <ContainerUIElement3D>
                                     <ContainerUIElement3D.Transform>
                                         <Transform3DGroup>
                                             <RotateTransform3D CenterY="0.1125">
                                                 <RotateTransform3D.Rotation>
-                                                    <AxisAngleRotation3D Axis="1 0 0" Angle="50.2"></AxisAngleRotation3D>
+                                                    <AxisAngleRotation3D Axis="1 0 0" Angle="49.2"></AxisAngleRotation3D>
                                                 </RotateTransform3D.Rotation>
                                             </RotateTransform3D>
                                             <RotateTransform3D CenterY="0.1125">
@@ -159,8 +159,8 @@
                                         <ContainerUIElement3D.Transform>
                                             <Transform3DGroup>
                                                 <TranslateTransform3D
-                                                    OffsetZ="0"
-                                                    OffsetY="0"
+                                                    OffsetZ="{Binding Path=BallisticAngle, Converter={StaticResource model}, ConverterParameter=z}"
+                                                    OffsetY="{Binding Path=BallisticAngle, Converter={StaticResource model}, ConverterParameter=y}"
                                                                   ></TranslateTransform3D>
 
                                             </Transform3DGroup>
