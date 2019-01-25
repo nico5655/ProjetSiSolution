@@ -15,7 +15,7 @@
             <Viewport3D x:Name="viewport" ClipToBounds="True">
                 <Viewport3D.Camera>
                     <PerspectiveCamera FieldOfView="80" NearPlaneDistance="0" FarPlaneDistance="100"
-                                       UpDirection="0 1 0" Position="-1.37 1.00 0.625" LookDirection="10 -11.2 -8"></PerspectiveCamera>
+                                       UpDirection="0 1 0" Position="-1.37 1.00 0.625" LookDirection="1.0 -1.12 -0.8"></PerspectiveCamera>
                 </Viewport3D.Camera>
                 <ModelUIElement3D>
                     <SpotLight Position="-1.2 1 0" Color="White" Direction="1.2 -1 0" InnerConeAngle="60" OuterConeAngle="80" Range="3"></SpotLight>
@@ -35,7 +35,7 @@
                         </Viewport2DVisual3D.Material>
                     </Viewport2DVisual3D>
                     <local:CourbeBallistique3D Rayon="0.75" x:Name="courbe" StartPoint="-137 0 0" IsHitTestVisible="False"></local:CourbeBallistique3D>
-                    
+
                     <objects:TSphere IsHitTestVisible="False" P_PointDeReference="-137 2 0" P_Rayon="2" x:Name="balle" P_NbFacettesVert="40" P_NbFacettesHori="40">
                         <objects:TSphere.P_Texture>
                             <MaterialGroup>
@@ -125,11 +125,7 @@
                                 </Transform3DGroup>
                             </ContainerUIElement3D.Transform>
                             <StaticResource ResourceKey="E9e_grosse_roue"></StaticResource>
-                            <StaticResource ResourceKey="E0_pas_2"></StaticResource>
                             <StaticResource ResourceKey="truc_maxence_2"></StaticResource>
-                            <StaticResource ResourceKey="machin_tournant_"></StaticResource>
-                            <StaticResource ResourceKey="truc_maxence_1"></StaticResource>
-                            <StaticResource ResourceKey="tige_filetee"></StaticResource>
                             <StaticResource ResourceKey="support_panneau_1"></StaticResource>
                             <ContainerUIElement3D>
                                 <ContainerUIElement3D.Transform>
@@ -138,12 +134,59 @@
                                 <StaticResource ResourceKey="tige_1"></StaticResource>
                             </ContainerUIElement3D>
                             <StaticResource ResourceKey="plaque_principale_1"></StaticResource>
-                            <StaticResource ResourceKey="plaque_principale_2"></StaticResource>
+                            <!--<StaticResource ResourceKey="plaque_principale_2"></StaticResource>-->
                             <ContainerUIElement3D x:Name="sommet">
-                                <StaticResource ResourceKey="tige_2"></StaticResource>
-                                <StaticResource ResourceKey="pivot_tige"></StaticResource>
-                                <StaticResource ResourceKey="BD_1"></StaticResource>
-                                <StaticResource ResourceKey="BD_2"></StaticResource>
+                                <ContainerUIElement3D>
+                                    <ContainerUIElement3D.Transform>
+                                        <Transform3DGroup>
+                                            <RotateTransform3D CenterY="0.1125">
+                                                <RotateTransform3D.Rotation>
+                                                    <AxisAngleRotation3D Axis="1 0 0" Angle="50.2"></AxisAngleRotation3D>
+                                                </RotateTransform3D.Rotation>
+                                            </RotateTransform3D>
+                                            <RotateTransform3D CenterY="0.1125">
+                                                <RotateTransform3D.Rotation>
+                                                    <AxisAngleRotation3D Axis="-1 0 0" Angle="{Binding Path=BallisticAngle, Converter={StaticResource model}}"></AxisAngleRotation3D>
+                                                </RotateTransform3D.Rotation>
+                                            </RotateTransform3D>
+                                        </Transform3DGroup>
+                                    </ContainerUIElement3D.Transform>
+                                    <StaticResource ResourceKey="E0_pas_2"></StaticResource>
+                                    <StaticResource ResourceKey="machin_tournant_"></StaticResource>
+                                    <StaticResource ResourceKey="tige_filetee"></StaticResource>
+                                    <StaticResource ResourceKey="truc_maxence_1"></StaticResource>
+                                    <ContainerUIElement3D>
+                                        <ContainerUIElement3D.Transform>
+                                            <Transform3DGroup>
+                                                <TranslateTransform3D
+                                                    OffsetZ="0"
+                                                    OffsetY="0"
+                                                                  ></TranslateTransform3D>
+
+                                            </Transform3DGroup>
+                                        </ContainerUIElement3D.Transform>
+                                        <StaticResource ResourceKey="pivot_tige"></StaticResource>
+                                        <StaticResource ResourceKey="tige_2"></StaticResource>
+                                    </ContainerUIElement3D>
+                                </ContainerUIElement3D>
+                                <ContainerUIElement3D>
+                                    <ContainerUIElement3D.Transform>
+                                        <Transform3DGroup>
+                                            <RotateTransform3D CenterX="0" CenterY="0.225" CenterZ="-0.005">
+                                                <RotateTransform3D.Rotation>
+                                                    <AxisAngleRotation3D Axis="1 0 0" Angle="-15"></AxisAngleRotation3D>
+                                                </RotateTransform3D.Rotation>
+                                            </RotateTransform3D>
+                                            <RotateTransform3D CenterX="0" CenterY="0.225" CenterZ="-0.005">
+                                                <RotateTransform3D.Rotation>
+                                                    <AxisAngleRotation3D Axis="1 0 0" Angle="{Binding Path=BallisticAngle}"></AxisAngleRotation3D>
+                                                </RotateTransform3D.Rotation>
+                                            </RotateTransform3D>
+                                        </Transform3DGroup>
+                                    </ContainerUIElement3D.Transform>
+                                    <StaticResource ResourceKey="BD_1"></StaticResource>
+                                    <StaticResource ResourceKey="BD_2"></StaticResource>
+                                </ContainerUIElement3D>
                             </ContainerUIElement3D>
                         </ContainerUIElement3D>
                     </ContainerUIElement3D>

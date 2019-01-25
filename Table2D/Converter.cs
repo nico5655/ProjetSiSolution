@@ -317,4 +317,29 @@ namespace ProjetSI
             return -(double)value;
         }
     }
+
+    public class ModelConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            double angle = (double)value;
+            double x = GetTigeLength(angle);
+
+            double beta = GetBeta(angle);
+            Vector3D d = (x - 26) * new Vector3D(0, 0, -1);//Cos(50.2 * PI / 180), Sin(50.2 * PI / 180));
+            AxisAngleRotation3D rotation3D = new AxisAngleRotation3D(new Vector3D(1, 0, 0), 50.2);
+            RotateTransform3D rd = new RotateTransform3D(rotation3D);
+            rd.Transform(d);
+            if (parameter?.ToString() == "z")
+                return d.Z / 100;
+            if (parameter?.ToString() == "y")
+                return d.Y / 100;
+            return beta;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
