@@ -507,7 +507,7 @@ namespace ProjetSI
                 Vector3D v = new Vector3D(Cos(angle * PI / 180) * Sin(lowAngle * PI / 180),
                     Sin(angle * PI / 180), -Cos(angle * PI / 180) * Cos(lowAngle * PI / 180));
                 v *= speed;//setting his length to speed
-                Point3D position = new Point3D(0, Z0(angle), 0);//defining start position with z0.
+                Point3D position = new Point3D(10, Z0(angle), 0);//defining start position with z0.
                 Vector3D rotation = new Vector3D();//rotation vector
                 points.Add(position);//adding first position
                 speeds.Add(v);//first speed

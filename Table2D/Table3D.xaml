@@ -93,6 +93,7 @@
                         <ScaleTransform3D ScaleX="0.01" ScaleY="0.01" ScaleZ="0.01"></ScaleTransform3D>
                     </ContainerUIElement3D.Transform>
                 </ContainerUIElement3D>
+                
                 <ContainerUIElement3D IsHitTestVisible="False">
                     <ContainerUIElement3D.Transform>
                         <Transform3DGroup>
@@ -101,7 +102,7 @@
                                     <AxisAngleRotation3D Axis="0 1 0" Angle="-90"></AxisAngleRotation3D>
                                 </RotateTransform3D.Rotation>
                             </RotateTransform3D>
-                            <TranslateTransform3D OffsetX="-1.37"></TranslateTransform3D>
+                            <TranslateTransform3D OffsetX="-1.33"></TranslateTransform3D>
                         </Transform3DGroup>
                     </ContainerUIElement3D.Transform>
                     <StaticResource ResourceKey="eclairage"></StaticResource>

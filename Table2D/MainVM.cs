@@ -432,6 +432,7 @@ namespace ProjetSI
                     ballisticAngle = value;
                     Notify();
                     Notify("BallPos");
+                    LoadDatas();
                 }
             }
         }
