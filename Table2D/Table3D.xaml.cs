@@ -115,5 +115,7 @@ namespace ProjetSI
                 courbe.Rayon = value;
             }
         }
+
+        public Visibility MaquetteVisibility { get => filet.Visibility; set => filet.Visibility = value; }
     }
 }

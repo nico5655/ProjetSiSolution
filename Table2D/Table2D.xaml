@@ -8,7 +8,7 @@
              d:DesignHeight="152.5" d:DesignWidth="274" d:DataContext="{d:DesignInstance {x:Type local:MainVM}, IsDesignTimeCreatable=True}">
     <Grid>
         <Viewbox>
-            <Canvas MouseDown="Canvas_MouseDown" MouseMove="Canvas_MouseMove" Width="{Binding TableWidth}" Height="{Binding TableHeight}">
+            <Canvas PreviewMouseDown="Canvas_MouseDown" MouseMove="Canvas_MouseMove" Width="{Binding TableWidth}" Height="{Binding TableHeight}">
                 <Canvas.Background>
                     <ImageBrush ImageSource="table.jpg" Stretch="UniformToFill"></ImageBrush>
                 </Canvas.Background>

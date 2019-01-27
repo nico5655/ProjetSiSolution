@@ -44,15 +44,15 @@ namespace ProjetSI
         /// <summary>
         /// D length on the model (cm).
         /// </summary>
-        const double D = 10.6;//11.154;
+        const double D = 21.4;//11.154;
         /// <summary>
         /// B length on the model (cm).
         /// </summary>
-        const double B = 12.11;
+        const double B = 22.85;//12.11;
         /// <summary>
         /// K length on the model (cm).
         /// </summary>
-        const double K = 6.5;
+        const double K = 11.6;
         /// <summary>
         /// Drag coefficient (S.I).
         /// </summary>
@@ -84,7 +84,19 @@ namespace ProjetSI
         public static double GetTigeLength(double shoutAngle)
         {
             double x = Sqrt(Pow(D, 2) + 2 * Sin(shoutAngle * PI / 180) * D * K + Pow(K, 2));
-            return x;//tihe len formula, calculated using Al-Kachi theorem.
+            return x;//tige len formula, calculated using Al-Kachi theorem.
+        }
+
+        /// <summary>
+        /// Calculates model's beta angle.
+        /// </summary>
+        /// <param name="alpha">Model shout angle (°).</param>
+        /// <returns></returns>
+        public static double GetBeta(double alpha)
+        {
+            double x = GetTigeLength(alpha);
+            double cos = (x * x - D * D + Pow(B - K, 2)) / (2 * (B - K) * x);//model's beta formula
+            return Acos(cos) * 180 / PI;
         }
 
         /// <summary>
@@ -495,7 +507,9 @@ namespace ProjetSI
                 Vector3D v = new Vector3D(Cos(angle * PI / 180) * Sin(lowAngle * PI / 180),
                     Sin(angle * PI / 180), -Cos(angle * PI / 180) * Cos(lowAngle * PI / 180));
                 v *= speed;//setting his length to speed
-                Point3D position = new Point3D(0, Z0(angle), 0);//defining start position with z0.
+                double startLength = 10;
+                Point3D position = new Point3D(startLength * Sin(lowAngle * PI / 180),
+                    Z0(angle), (-startLength + 2) * Cos(lowAngle * PI / 180));//defining start position with z0.
                 Vector3D rotation = new Vector3D();//rotation vector
                 points.Add(position);//adding first position
                 speeds.Add(v);//first speed

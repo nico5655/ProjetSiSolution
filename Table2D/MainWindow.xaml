@@ -31,7 +31,7 @@
                     </local:Table3D.BallPos>
                     <local:Table3D.Camera>
                         <PerspectiveCamera FieldOfView="80" NearPlaneDistance="0" FarPlaneDistance="100"
-                                       UpDirection="0 1 0" Position="-1.37 0.85 0.625" LookDirection="10 -9 -7.5"></PerspectiveCamera>
+                                       UpDirection="0 1 0" Position="-1.37 1.00 0.625" LookDirection="10 -11.2 -8"></PerspectiveCamera>
                     </local:Table3D.Camera>
                 </local:Table3D>
             </Viewbox>
@@ -63,7 +63,7 @@
                     <Rectangle Width="1" Fill="Black"></Rectangle>
                 </StackPanel>
                 <Viewbox>
-                    <local:Table3D x:Name="tableBalle" Width="160" Height="140" Background="White" CourbeRayon="0">
+                    <local:Table3D x:Name="tableBalle" Width="160" Height="140" Background="White" CourbeRayon="0" MaquetteVisibility="Collapsed">
                         <local:Table3D.MagnusRotation>
                             <MultiBinding Converter="{StaticResource ResourceKey=angle}">
                                 <Binding Path="T"></Binding>
