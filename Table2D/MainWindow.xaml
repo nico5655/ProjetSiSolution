@@ -16,7 +16,7 @@
         </Grid.ColumnDefinitions>
         <StackPanel>
             <Viewbox Grid.Column="0" VerticalAlignment="Top">
-                <local:Table3D Width="700" Height="500" Background="LightSkyBlue">
+                <local:Table3D Width="700" Height="500" Background="LightSkyBlue" MaquetteVisibility="Visible">
                     <local:Table3D.MagnusRotation>
                         <MultiBinding Converter="{StaticResource ResourceKey=angle}">
                             <Binding Path="T"></Binding>
@@ -146,7 +146,7 @@
                 <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
             <Viewbox>
-                <local:Table3D Width="{Binding Path=TableWidth}" Height="{Binding Path=TableHeight}" Background="LightSkyBlue">
+                <local:Table3D Width="{Binding Path=TableWidth}" Height="{Binding Path=TableHeight}" Background="LightSkyBlue" MaquetteVisibility="Collapsed">
                     <local:Table3D.MagnusRotation>
                         <MultiBinding Converter="{StaticResource ResourceKey=angle}">
                             <Binding Path="T"></Binding>
@@ -172,7 +172,7 @@
                 </Grid.ColumnDefinitions>
                 <Viewbox ClipToBounds="True" Stretch="UniformToFill" Margin="2">
                     <Grid>
-                        <local:Table3D Width="{Binding TableWidth}" Height="195" FiletVisibility="Hidden">
+                        <local:Table3D Width="{Binding TableWidth}" Height="195" FiletVisibility="Hidden" MaquetteVisibility="Collapsed">
                             <local:Table3D.MagnusRotation>
                                 <MultiBinding Converter="{StaticResource ResourceKey=angle}">
                                     <Binding Path="T"></Binding>

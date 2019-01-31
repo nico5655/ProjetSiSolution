@@ -116,6 +116,14 @@ namespace ProjetSI
             }
         }
 
-        public Visibility MaquetteVisibility { get => filet.Visibility; set => filet.Visibility = value; }
+        public Visibility MaquetteVisibility
+        {
+            get => maquette.Visibility; set
+            {
+                maquette.Visibility = value;
+                if (value == Visibility.Collapsed)
+                    greatMaster.Children.Remove(maquette);
+            }
+        }
     }
 }

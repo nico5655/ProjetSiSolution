@@ -65,6 +65,12 @@
                                 </DiffuseMaterial>
                             </MaterialGroup>
                         </objects:TSphere.P_Texture>
+                        <objects:TSphere.Transform>
+                            <Transform3DGroup>
+                                <RotateTransform3D></RotateTransform3D>
+                                <TranslateTransform3D></TranslateTransform3D>
+                            </Transform3DGroup>
+                        </objects:TSphere.Transform>
                     </objects:TSphere>
                     <ModelUIElement3D IsHitTestVisible="False" x:Name="filet">
                         <GeometryModel3D>
@@ -94,7 +100,7 @@
                     </ContainerUIElement3D.Transform>
                 </ContainerUIElement3D>
                 
-                <ContainerUIElement3D IsHitTestVisible="False">
+                <ContainerUIElement3D IsHitTestVisible="False" x:Name="greatMaster">
                     <ContainerUIElement3D.Transform>
                         <Transform3DGroup>
                             <RotateTransform3D>
