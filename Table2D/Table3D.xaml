@@ -10,12 +10,13 @@
     <UserControl.Resources>
         <ResourceDictionary Source="3DModel.xaml"></ResourceDictionary>
     </UserControl.Resources>
-    <Grid>
-        <Border Background="Transparent">
+    <Grid Background="Transparent">
+        <Border>
             <Viewport3D x:Name="viewport" ClipToBounds="True">
                 <Viewport3D.Camera>
                     <PerspectiveCamera FieldOfView="80" NearPlaneDistance="0" FarPlaneDistance="100"
-                                       UpDirection="0 1 0" Position="-1.37 1.00 0.625" LookDirection="1.0 -1.12 -0.8"></PerspectiveCamera>
+                                       UpDirection="0 1 0" Position="-1.37 1.00 0.625" LookDirection="1.0 -1.12 -0.8">
+                    </PerspectiveCamera>
                 </Viewport3D.Camera>
                 <ModelUIElement3D>
                     <SpotLight Position="-1.2 1 0" Color="White" Direction="1.2 -1 0" InnerConeAngle="60" OuterConeAngle="80" Range="3"></SpotLight>
@@ -95,11 +96,92 @@
                             </GeometryModel3D.BackMaterial>
                         </GeometryModel3D>
                     </ModelUIElement3D>
+                    <ModelVisual3D>
+                        <ModelVisual3D.Content>
+                            <Model3DGroup>
+                                <Model3DGroup.Children>
+                                    <AmbientLight Color="#4C4C4C"/>
+                                    <DirectionalLight Color="#3B3B3B" Direction="-7.100000,-7.100000,-0.000000"/>
+                                    <DirectionalLight Color="#222222" Direction="3.400000,-6.100000,7.100000"/>
+                                    <DirectionalLight Color="#2A2A2A" Direction="9.200000,-3.400000,1.800000"/>
+                                </Model3DGroup.Children>
+                            </Model3DGroup>
+                        </ModelVisual3D.Content>
+                    </ModelVisual3D>
                     <ContainerUIElement3D.Transform>
                         <ScaleTransform3D ScaleX="0.01" ScaleY="0.01" ScaleZ="0.01"></ScaleTransform3D>
                     </ContainerUIElement3D.Transform>
                 </ContainerUIElement3D>
-                
+            </Viewport3D>
+        </Border>
+        <Border>
+            <Border.Clip>
+                <RectangleGeometry x:Name="clipper">
+                    <RectangleGeometry.Rect>
+                        <Rect Width="140" Height="200" Location="90 285"></Rect>
+                    </RectangleGeometry.Rect>
+                </RectangleGeometry>
+            </Border.Clip>
+            <Viewport3D x:Name="viewport2" ClipToBounds="True" IsHitTestVisible="False">
+                <Viewport3D.Camera>
+                    <PerspectiveCamera FieldOfView="80" NearPlaneDistance="0" FarPlaneDistance="100"
+                                       UpDirection="0 1 0" Position="-1.37 1.00 0.625" LookDirection="1.0 -1.12 -0.8">
+                    </PerspectiveCamera>
+                </Viewport3D.Camera>
+                <ModelUIElement3D>
+                    <SpotLight Position="-1.2 1 0" Color="White" Direction="1.2 -1 0" InnerConeAngle="60" OuterConeAngle="80" Range="3"></SpotLight>
+                </ModelUIElement3D>
+                <ContainerUIElement3D>
+                    <Viewport2DVisual3D>
+                        <Viewport2DVisual3D.Geometry>
+                            <MeshGeometry3D  Positions="137 0 76.25, -137 0 76.25, -137 0 -76.25, 137 0 -76.25" TextureCoordinates="1 1, 0 1, 0 0, 1 0"
+                                             TriangleIndices="1 0 2 3 2 0" Normals="0 1 0, 0 1 0, 0 1 0, 0 1 0">
+                            </MeshGeometry3D>
+                        </Viewport2DVisual3D.Geometry>
+                        <Viewport2DVisual3D.Visual>
+                            <local:Table2D ClipToBounds="True" Width="{Binding Path=TableWidth}" Height="{Binding Path=TableHeight}" Background="White"></local:Table2D>
+                        </Viewport2DVisual3D.Visual>
+                        <Viewport2DVisual3D.Material>
+                            <DiffuseMaterial Viewport2DVisual3D.IsVisualHostMaterial="True"></DiffuseMaterial>
+                        </Viewport2DVisual3D.Material>
+                    </Viewport2DVisual3D>
+                    <local:CourbeBallistique3D Rayon="0.75" x:Name="cour" StartPoint="-137 0 0" IsHitTestVisible="False"></local:CourbeBallistique3D>
+
+                    <objects:TSphere IsHitTestVisible="False" P_PointDeReference="-137 2 0" P_Rayon="2" x:Name="ba" P_NbFacettesVert="40" P_NbFacettesHori="40">
+                        <objects:TSphere.P_Texture>
+                            <MaterialGroup>
+                                <DiffuseMaterial>
+                                    <DiffuseMaterial.Brush>
+                                        <RadialGradientBrush Center="0.5 0.5" RadiusX="1" RadiusY="1">
+                                            <RadialGradientBrush.GradientStops>
+                                                <GradientStop Color="White" Offset="0"></GradientStop>
+                                                <GradientStop Offset="0.3" Color="Gray"></GradientStop>
+                                                <GradientStop Offset="0.6" Color="White"></GradientStop>
+                                                <GradientStop Color="LightCyan" Offset="1"></GradientStop>
+                                            </RadialGradientBrush.GradientStops>
+                                        </RadialGradientBrush>
+                                    </DiffuseMaterial.Brush>
+                                </DiffuseMaterial>
+                                <DiffuseMaterial>
+                                    <DiffuseMaterial.Brush>
+                                        <VisualBrush>
+                                            <VisualBrush.Visual>
+                                                <Canvas Width="200" Height="200">
+                                                    <Label Width="50" Height="25"
+                                                           FontSize="12pt" Content="JBS"></Label>
+                                                </Canvas>
+                                            </VisualBrush.Visual>
+                                        </VisualBrush>
+                                    </DiffuseMaterial.Brush>
+                                </DiffuseMaterial>
+                            </MaterialGroup>
+                        </objects:TSphere.P_Texture>
+                    </objects:TSphere>
+                    <ContainerUIElement3D.Transform>
+                        <ScaleTransform3D ScaleX="0.01" ScaleY="0.01" ScaleZ="0.01"></ScaleTransform3D>
+                    </ContainerUIElement3D.Transform>
+                </ContainerUIElement3D>
+
                 <ContainerUIElement3D IsHitTestVisible="False" x:Name="greatMaster">
                     <ContainerUIElement3D.Transform>
                         <Transform3DGroup>

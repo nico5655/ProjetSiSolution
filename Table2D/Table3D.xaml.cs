@@ -72,17 +72,9 @@ namespace ProjetSI
         /// </summary>
         public Camera Camera
         {
-            get { return (Camera)GetValue(CameraProperty); }
-            set { SetValue(CameraProperty, value); }
+            get { return viewport.Camera; }
+            set { viewport.Camera = value; viewport2.Camera = value; }
         }
-
-        /// <summary>
-        /// Camera of the Viewport3D.
-        /// </summary>
-        public static readonly DependencyProperty CameraProperty =
-            DependencyProperty.Register("Camera", typeof(Camera), typeof(Table3D), new PropertyMetadata(
-                new PerspectiveCamera(new Point3D(-1.37, 1.00, 0.625), new Vector3D(10, -11.5, -9), new Vector3D(0, 1, 0), 80),
-                (d, e) => (d as Table3D).viewport.Camera = (Camera)e.NewValue));
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
@@ -98,15 +90,23 @@ namespace ProjetSI
             binding.Bindings.Add(new Binding("YRotation") { Source = DataContext });
             binding.Bindings.Add(new Binding("ZRotation") { Source = DataContext });
             BindingOperations.SetBinding(courbe, CourbeBallistique3D.PointsProperty, binding);
+            //BindingOperations.SetBinding(courbe2, CourbeBallistique3D.PointsProperty, binding);
             BindingOperations.SetBinding(courbe, UIElement3D.VisibilityProperty, new Binding("T")
             {
                 Source = DataContext,
                 Converter = new BaseConverter((value, targetType, parameter, culture) => (int)value == 0 ? Visibility.Visible : Visibility.Collapsed),
             });
+            /*BindingOperations.SetBinding(courbe2, UIElement3D.VisibilityProperty, new Binding("T")
+            {
+                Source = DataContext,
+                Converter = new BaseConverter((value, targetType, parameter, culture) => (int)value == 0 ? Visibility.Visible : Visibility.Collapsed),
+            });*/
             courbe.InvalidateModel();
+            //courbe2.InvalidateModel();
         }
 
         public Visibility FiletVisibility { get => filet.Visibility; set => filet.Visibility = value; }
+        public Rect ClipperRect { get => clipper.Rect; set => clipper.Rect = value; }
         public double CourbeRayon
         {
             get => courbe.Rayon;
