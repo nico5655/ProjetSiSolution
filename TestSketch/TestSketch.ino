@@ -38,19 +38,21 @@ void setup() {
 	ballShouter.attach(9);
 	bottomAngle.attach(10);
 	aimControlStepper->setSpeed(aimSpeed);*/
-
-	attachInterrupt(0, magnet_detect, RISING);
+	pinMode(2, INPUT);
+	Serial.println(digitalRead(2));
+	attachInterrupt(digitalPinToInterrupt(2), magnet_detect, RISING);
+	myMotor->setSpeed(255);
 	myMotor->run(FORWARD);
 }
 int value = 50;
 int previous = 0;
 // the loop function runs over and over again until power down or reset
 void loop() {
-	Serial.println("turning begin");
+	/*Serial.println("turning begin");
 	leftShoutStepper->setSpeed(180);
 	leftShoutStepper->step(2000, FORWARD, DOUBLE);
 	leftShoutStepper->step(2000, BACKWARD, DOUBLE);
-	delay(1000);
+	delay(1000);*/
 	/*float t1 = millis();
 	leftShoutStepper->step(20000, FORWARD, DOUBLE);
 	float t2 = millis();
@@ -58,18 +60,11 @@ void loop() {
 	float rps = (100 / t);
 	Serial.println("Turning ended in " + String(t) + "s, speed: " + String(rps) + "rps");
 	delay(5000);*/
-	/*if (millis() - timeold >= 1000)
+	if (millis() - timeold >= 1000)
 	{
 		rps = (half_revolutions / ((millis() - timeold) / 1000.0));
-		Serial.println(String(value) + ";" + String(rps));
-		if (value < 255)
-			value++;
-		else
-		{
-			Serial.println("done");
-			value = 50;
-		}
-		myMotor->setSpeed(value);
+		Serial.println(String(value) + " ;" + String(rps));
 		timeold = millis();
-		half_revolutions = 0;*/
+		half_revolutions = 0;
+	}
 }
