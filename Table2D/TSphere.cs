@@ -106,7 +106,6 @@ namespace Objects3D
             trs.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), 155), trs.Transform(P_PointDeReference)));
             //base transform to see the text
             double value = omega.Length;//rotation value
-            omega.Normalize();
             trs.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(omega, value), trs.Transform(P_PointDeReference)));//rotation axis and value
             Transform = trs;
         }
