@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -90,19 +91,30 @@ namespace ProjetSI
             binding.Bindings.Add(new Binding("YRotation") { Source = DataContext });
             binding.Bindings.Add(new Binding("ZRotation") { Source = DataContext });
             BindingOperations.SetBinding(courbe, CourbeBallistique3D.PointsProperty, binding);
-            //BindingOperations.SetBinding(courbe2, CourbeBallistique3D.PointsProperty, binding);
+            BindingOperations.SetBinding(courbe2, CourbeBallistique3D.PointsProperty, binding);
             BindingOperations.SetBinding(courbe, UIElement3D.VisibilityProperty, new Binding("T")
             {
                 Source = DataContext,
                 Converter = new BaseConverter((value, targetType, parameter, culture) => (int)value == 0 ? Visibility.Visible : Visibility.Collapsed),
             });
-            /*BindingOperations.SetBinding(courbe2, UIElement3D.VisibilityProperty, new Binding("T")
+            BindingOperations.SetBinding(courbe2, UIElement3D.VisibilityProperty, new Binding("T")
             {
                 Source = DataContext,
                 Converter = new BaseConverter((value, targetType, parameter, culture) => (int)value == 0 ? Visibility.Visible : Visibility.Collapsed),
-            });*/
+            });
+
+            BindingOperations.SetBinding(viewport2, UIElement3D.VisibilityProperty, new Binding("T")
+            {
+                Source = DataContext,
+                Converter = new BaseConverter((value, targetType, parameter, culture) =>
+                {
+                    if ((int)value == 0)
+                        return Visibility.Visible;
+                    return Visibility.Collapsed;
+                    }),
+            });
             courbe.InvalidateModel();
-            //courbe2.InvalidateModel();
+            courbe2.InvalidateModel();
         }
 
         public Visibility FiletVisibility { get => filet.Visibility; set => filet.Visibility = value; }
@@ -118,11 +130,9 @@ namespace ProjetSI
 
         public Visibility MaquetteVisibility
         {
-            get => maquette.Visibility; set
+            get => viewport2.Visibility; set
             {
-                maquette.Visibility = value;
-                if (value == Visibility.Collapsed)
-                    greatMaster.Children.Remove(maquette);
+                viewport2.Visibility = value;
             }
         }
     }

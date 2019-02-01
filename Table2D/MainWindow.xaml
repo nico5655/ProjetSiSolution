@@ -179,6 +179,9 @@
                 <Viewbox ClipToBounds="True" Stretch="UniformToFill" Margin="2">
                     <Grid>
                         <local:Table3D Width="{Binding TableWidth}" Height="195" FiletVisibility="Hidden" MaquetteVisibility="Visible">
+                            <local:Table3D.ClipperRect>
+                                <Rect Width="40" Height="40" Location="0 55"></Rect>
+                            </local:Table3D.ClipperRect>
                             <local:Table3D.MagnusRotation>
                                 <MultiBinding Converter="{StaticResource ResourceKey=angle}">
                                     <Binding Path="T"></Binding>

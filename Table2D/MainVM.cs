@@ -127,8 +127,12 @@ namespace ProjetSI
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            MainWindow.DipThread.Invoke(() =>
-            Ports = new ObservableCollection<string>(SerialPort.GetPortNames()));
+            try
+            {
+                MainWindow.DipThread.Invoke(() =>
+                Ports = new ObservableCollection<string>(SerialPort.GetPortNames()));
+            }
+            catch { }
         }
 
         public static bool InDesignMode()
