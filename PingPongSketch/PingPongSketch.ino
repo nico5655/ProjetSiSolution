@@ -11,6 +11,10 @@ const double r = 5;
 double speed = 0;
 double length = 14;//default length
 double angle = 90;//default downAngle
+const double k = 4.574e-2;//N.m/A
+const double Umax = 11.09;//V
+const double I = 0.180;//A
+const double R = 18.5;//Ohms
 int ballDropperPin = 9;
 int bottomAnglePin = 10;
 Servo ballDropper;
@@ -27,8 +31,9 @@ uint16_t getSteps(double length)
 
 uint8_t toPmw(double speed)
 {
-	double rps = speed / (2 * PI * r);
-	return (uint8_t)(10 * (rps + 2));
+	double rds = speed / R;
+	double alpha = (R*I + k * rds) / Umax;
+	return (uint8_t)(alpha * 255);
 }
 
 void start() {
