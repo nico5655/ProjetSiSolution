@@ -76,9 +76,14 @@ void setSpeed(double value) {
 void setLength(double value) {//longueur tige filetée
 	if (length != value)
 	{
+		uint16_t steps = getSteps(value - length);
 		length = value;
+		uint8_t direction = FORWARD;
+		if (steps < 0)
+			direction = BACKWARD;
+		steps = abs(steps);
 		Serial.println("Setting length to " + String(value));
-		tigeStepper->step(getSteps(value), FORWARD, DOUBLE);
+		tigeStepper->step(steps, direction, DOUBLE);
 		delay(5000);
 	}
 	Serial.println("done");
