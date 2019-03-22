@@ -31,7 +31,7 @@ uint16_t getSteps(double length)
 
 uint8_t toPmw(double speed)
 {
-	double rds = (speed / r) * 2* PI;
+	double rds = (speed / r);
 	double alpha = (R*I + k * rds) / Umax;
 	return (uint8_t)(alpha * 255);
 }
