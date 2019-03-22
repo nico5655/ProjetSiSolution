@@ -15,7 +15,7 @@ const uint8_t rightStepType = DOUBLE;
 
 
 Adafruit_MotorShield AFMStop = Adafruit_MotorShield();
-Adafruit_StepperMotor *leftShoutStepper = AFMStop.getStepper(200, 1);
+//Adafruit_StepperMotor *leftShoutStepper = AFMStop.getStepper(200, 1);
 Adafruit_DCMotor *myMotor = AFMStop.getMotor(1);
 
 
@@ -40,18 +40,18 @@ void setup() {
 	aimControlStepper->setSpeed(aimSpeed);*/
 	//pinMode(2, INPUT);
 	//attachInterrupt(digitalPinToInterrupt(2), magnet_detect, RISING);
-	//myMotor->setSpeed(255);
-	//myMotor->run(FORWARD);
+	myMotor->setSpeed(170);
+	myMotor->run(FORWARD);
 }
 int value = 50;
 int previous = 0;
 // the loop function runs over and over again until power down or reset
 void loop() {
-	Serial.println("turning begin");
-	leftShoutStepper->setSpeed(180);
-	leftShoutStepper->step(2000, FORWARD, DOUBLE);
-	leftShoutStepper->step(2000, BACKWARD, DOUBLE);
-	delay(1000);
+	//Serial.println("turning begin");
+	//leftShoutStepper->setSpeed(180);
+	//leftShoutStepper->step(2000, FORWARD, DOUBLE);
+	//leftShoutStepper->step(2000, BACKWARD, DOUBLE);
+	//delay(1000);
 	/*float t1 = millis();
 	leftShoutStepper->step(20000, FORWARD, DOUBLE);
 	float t2 = millis();
