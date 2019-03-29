@@ -72,6 +72,7 @@
     </ApplicationDefinition>
     <Compile Include="CourbeBallistique3D.cs" />
     <Compile Include="Robot.cs" />
+    <Compile Include="T5r.cs" />
     <Compile Include="Table3D.xaml.cs">
       <DependentUpon>Table3D.xaml</DependentUpon>
     </Compile>

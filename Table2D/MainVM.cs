@@ -27,6 +27,11 @@ namespace ProjetSI
         {
             Angle = 90;
             YRotation = 0;
+            Tirs = new ObservableCollection<Tir>()
+            {
+                new Tir(30,550,90,new Vector3D()),
+                new Tir(30,550,90,new Vector3D(0,20,0)),
+            };
             LoadDatas();
             CompositionTarget.Rendering += CompositionTarget_Rendering;
             try
@@ -701,6 +706,7 @@ namespace ProjetSI
 
         SoundPlayer player;
         private bool _continue = true;
+        private ObservableCollection<Tir> tirs;
 
         /// <summary>
         /// Calculate all ballistic parameter to match the new Ball direction.
@@ -739,6 +745,39 @@ namespace ProjetSI
             if (GetPosition(BallSpeed, BallisticAngle, Angle, new Vector3D(XRotation, YRotation, ZRotation)).Y != vector.Y)
             {
                 Angle = GetLowAngle(BallisticAngle, BallSpeed, new Vector3D(XRotation, y: YRotation, z: ZRotation), vector);
+            }
+        }
+
+        public ObservableCollection<Tir> Tirs
+        {
+            get
+            {
+                return tirs;
+            }
+            set
+            {
+                if (tirs != value)
+                {
+                    tirs = value;
+                    Notify();
+                }
+            }
+        }
+        public Tir SelectedShoot
+        {
+            get
+            {
+                return new Tir(BallisticAngle, BallSpeed, Angle, new Vector3D(XRotation, YRotation, ZRotation));
+            }
+            set
+            {
+                BallisticAngle = value.BallisticAngle;
+                BallSpeed = value.BallSpeed;
+                Angle = value.LowAngle;
+                XRotation = value.Rotation.X;
+                YRotation = value.Rotation.Y;
+                ZRotation = value.Rotation.Z;
+                Notify();
             }
         }
 
