@@ -9,6 +9,7 @@ using System.IO.Ports;
 using System.Linq;
 using System.Media;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
@@ -19,6 +20,7 @@ using System.Windows.Media.Media3D;
 using System.Windows.Threading;
 using static ProjetSI.Ballistique;
 
+
 namespace ProjetSI
 {
     public class MainVM : INotifyPropertyChanged
@@ -27,11 +29,24 @@ namespace ProjetSI
         {
             Angle = 90;
             YRotation = 0;
-            Tirs = new ObservableCollection<Tir>()
-            {
+            if (!File.Exists(path))
+                Tirs = new ObservableCollection<Tir>()
+                {
                 new Tir(30,550,90,new Vector3D()),
-                new Tir(30,550,90,new Vector3D(0,20,0)),
-            };
+                new Tir(15,500,90,new Vector3D(0,20,0)),
+                };
+            else
+            {
+                BinaryFormatter bn = new BinaryFormatter();
+                object obj = null;
+                using (FileStream fs = File.Open(path, FileMode.Open, FileAccess.ReadWrite))
+                {
+                    obj = bn.Deserialize(fs);
+                }
+                Tirs = obj as ObservableCollection<Tir>;
+            }
+            Tirs.CollectionChanged += Tirs_CollectionChanged;
+            SelectedShoot = Tirs[0];
             LoadDatas();
             CompositionTarget.Rendering += CompositionTarget_Rendering;
             try
@@ -51,6 +66,11 @@ namespace ProjetSI
                 Robot.PortNumber = Ports.LastOrDefault();
                 Loop();
             }
+        }
+
+        private void Tirs_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            (Edit as BaseCommand).OnCanExecuteChanged();
         }
 
         private async void Loop()
@@ -189,6 +209,63 @@ namespace ProjetSI
         private ICommand setAim;
         private ICommand dropBall;
         private ICommand startStop;
+        private ICommand add;
+        private ICommand edit;
+        private ICommand save;
+
+        public ICommand Add
+        {
+            get
+            {
+                if (add == null)
+                    add = new BaseCommand(() => Tirs.Add(SelectedShoot));
+                return add;
+            }
+        }
+
+        public ICommand Edit
+        {
+            get
+            {
+                if (edit == null)
+                    edit = new BaseCommand(() =>
+                    {
+                        Tir shoot = Tirs.FirstOrDefault(t => t.Name == lastSelected.Name);
+                        if (shoot != null)
+                        {
+                            Tirs.Remove(shoot);
+                            shoot.BallisticAngle = BallisticAngle;
+                            shoot.BallSpeed = BallSpeed;
+                            shoot.Name = Name;
+                            shoot.LowAngle = Angle;
+                            shoot.Rotation = new Vector3D(XRotation, YRotation, ZRotation);
+                            Tirs.Add(shoot);
+                            SelectedShoot = shoot;
+                            Notify("Tirs");
+                        }
+                    }, () => Tirs.Count != 0);
+                return edit;
+            }
+        }
+
+        const string path = "savedShoot.pi";
+        public ICommand Save
+        {
+            get
+            {
+                if (save == null)
+                    save = new BaseCommand(() =>
+                      {
+                          BinaryFormatter bn = new BinaryFormatter();
+                          using (FileStream fs = File.Open(path, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+                          {
+                              bn.Serialize(fs, Tirs);
+                          }
+                      });
+                return save;
+            }
+        }
+
         /// <summary>
         /// Fire the ball.
         /// </summary>
@@ -417,6 +494,20 @@ namespace ProjetSI
             }
         }
 
+        private string name;
+        public string Name
+        {
+            get
+            {
+                return name;
+            }
+            set
+            {
+                name = value;
+                Notify();
+            }
+        }
+
         /// <summary>
         /// Can we select the target by a click.
         /// </summary>
@@ -636,6 +727,46 @@ namespace ProjetSI
                 Notify();
             }
         }
+
+        public ObservableCollection<Tir> Tirs
+        {
+            get
+            {
+                return tirs;
+            }
+            set
+            {
+                if (tirs != value)
+                {
+                    tirs = value;
+                    Notify();
+                }
+            }
+        }
+
+        private Tir lastSelected;
+        public Tir SelectedShoot
+        {
+            get
+            {
+                return new Tir(Name, BallisticAngle, BallSpeed, Angle, new Vector3D(XRotation, YRotation, ZRotation));
+            }
+            set
+            {
+                if (value != null)
+                {
+                    BallisticAngle = value.BallisticAngle;
+                    BallSpeed = value.BallSpeed;
+                    Angle = value.LowAngle;
+                    XRotation = value.Rotation.X;
+                    YRotation = value.Rotation.Y;
+                    ZRotation = value.Rotation.Z;
+                    Name = value.Name;
+                    lastSelected = value;
+                    Notify();
+                }
+            }
+        }
         #endregion
 
         #region methods
@@ -745,39 +876,6 @@ namespace ProjetSI
             if (GetPosition(BallSpeed, BallisticAngle, Angle, new Vector3D(XRotation, YRotation, ZRotation)).Y != vector.Y)
             {
                 Angle = GetLowAngle(BallisticAngle, BallSpeed, new Vector3D(XRotation, y: YRotation, z: ZRotation), vector);
-            }
-        }
-
-        public ObservableCollection<Tir> Tirs
-        {
-            get
-            {
-                return tirs;
-            }
-            set
-            {
-                if (tirs != value)
-                {
-                    tirs = value;
-                    Notify();
-                }
-            }
-        }
-        public Tir SelectedShoot
-        {
-            get
-            {
-                return new Tir(BallisticAngle, BallSpeed, Angle, new Vector3D(XRotation, YRotation, ZRotation));
-            }
-            set
-            {
-                BallisticAngle = value.BallisticAngle;
-                BallSpeed = value.BallSpeed;
-                Angle = value.LowAngle;
-                XRotation = value.Rotation.X;
-                YRotation = value.Rotation.Y;
-                ZRotation = value.Rotation.Z;
-                Notify();
             }
         }
 
