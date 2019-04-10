@@ -5,14 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProjetSI"
         mc:Ignorable="d"
-        Title="Ping Pong" Height="600" Width="1200">
+        Title="Ping Pong" Height="700" Width="1400">
     <Window.DataContext>
         <local:MainVM></local:MainVM>
     </Window.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition Width="600"/>
+            <ColumnDefinition Width="700"/>
         </Grid.ColumnDefinitions>
         <StackPanel>
             <Viewbox Grid.Column="0" VerticalAlignment="Top">
@@ -173,8 +173,9 @@
             </Viewbox>
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="352.667"/>
+                    <ColumnDefinition Width="234"/>
                     <ColumnDefinition/>
-                    <ColumnDefinition Width="0.7*"/>
                 </Grid.ColumnDefinitions>
                 <Viewbox ClipToBounds="True" Stretch="UniformToFill" Margin="2">
                     <Grid>
@@ -295,6 +296,28 @@
                             </SolidColorBrush>
                         </Rectangle.Fill>
                     </Rectangle>
+                </Grid>
+                <Grid Grid.Column="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="25"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.ColumnSpan="3" Text="{Binding Path=Name, Mode=TwoWay}"></TextBox>
+                    <ListBox Grid.ColumnSpan="3" Grid.Row="1" ItemsSource="{Binding Path=Tirs}" SelectedItem="{Binding Path=SelectedShoot, Mode=TwoWay}">
+                    </ListBox>
+                    <Button Grid.Row="2" Content="Add" Command="{Binding Path=Add}">
+                        <Button.ToolTip>
+                            <ToolTip>Ajouter le tir actuel à la liste.</ToolTip>
+                        </Button.ToolTip>
+                    </Button>
+                    <Button Grid.Row="2" Grid.Column="1" Command="{Binding Path=Edit}" ToolTip="Modifie le tir sélectionné dans la liste pour correspondre au tir actuel.">Edit</Button>
+                    <Button Grid.Row="2" Grid.Column="2" Command="{Binding Path=Save}" ToolTip="Sauvegarder la liste dans un fichier.">Save</Button>
                 </Grid>
             </Grid>
             <TextBlock Grid.Row="2" TextAlignment="Center" VerticalAlignment="Center" Height="20">
