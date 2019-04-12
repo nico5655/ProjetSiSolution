@@ -16,7 +16,8 @@ const uint8_t rightStepType = DOUBLE;
 
 Adafruit_MotorShield AFMStop = Adafruit_MotorShield();
 //Adafruit_StepperMotor *leftShoutStepper = AFMStop.getStepper(200, 1);
-Adafruit_DCMotor *myMotor = AFMStop.getMotor(1);
+Adafruit_DCMotor *myMotor = AFMStop.getMotor(3);
+Adafruit_DCMotor *myMotor1 = AFMStop.getMotor(4);
 
 
 volatile byte half_revolutions;
@@ -40,13 +41,35 @@ void setup() {
 	aimControlStepper->setSpeed(aimSpeed);*/
 	//pinMode(2, INPUT);
 	//attachInterrupt(digitalPinToInterrupt(2), magnet_detect, RISING);
-	myMotor->setSpeed(170);
-	myMotor->run(FORWARD);
+	myMotor->setSpeed(140);
+	myMotor->run(BACKWARD);
+	myMotor1->setSpeed(140);
+	myMotor1->run(BACKWARD);
 }
 int value = 50;
 int previous = 0;
 // the loop function runs over and over again until power down or reset
 void loop() {
+	if (Serial.available())
+	{
+		int value = Serial.read();
+		Serial.println("setting value");
+		if (value < 0)
+		{
+			value = -value;
+			myMotor->setSpeed(value);
+			myMotor1->setSpeed(value);
+			myMotor->run(BACKWARD);
+			myMotor1->run(BACKWARD);
+		}
+		else
+		{
+			myMotor->setSpeed(value);
+			myMotor1->setSpeed(value);
+			myMotor->run(FORWARD);
+			myMotor1->run(FORWARD);
+		}
+	}
 	//Serial.println("turning begin");
 	//leftShoutStepper->setSpeed(180);
 	//leftShoutStepper->step(2000, FORWARD, DOUBLE);
