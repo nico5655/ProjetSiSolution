@@ -20,9 +20,9 @@ int bottomAnglePin = 10;
 Servo ballDropper;
 Servo bottomAngle;
 Adafruit_MotorShield AFMS = Adafruit_MotorShield();
-Adafruit_DCMotor *leftMotor = AFMS.getMotor(1);
-Adafruit_DCMotor *rightMotor = AFMS.getMotor(2);
-Adafruit_StepperMotor *tigeStepper = AFMS.getStepper(200, 2);
+Adafruit_DCMotor *leftMotor = AFMS.getMotor(3);
+Adafruit_DCMotor *rightMotor = AFMS.getMotor(4);
+Adafruit_StepperMotor *tigeStepper = AFMS.getStepper(200, 1);
 
 uint16_t getSteps(double length)
 {
