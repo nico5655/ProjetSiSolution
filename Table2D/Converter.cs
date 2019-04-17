@@ -13,12 +13,14 @@ using static System.Math;
 
 namespace ProjetSI
 {
-
+    /// <summary>
+    /// Converter for the net (get the distance to the net or the validity of the shoot).
+    /// </summary>
     public class FiletConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if(targetType == typeof(double))
+            if (targetType == typeof(double))
             {
                 try
                 {
@@ -56,6 +58,9 @@ namespace ProjetSI
         }
     }
 
+    /// <summary>
+    /// The point is visible if it is in the area.
+    /// </summary>
     public class TargetVisibilityConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
@@ -78,6 +83,9 @@ namespace ProjetSI
         }
     }
 
+    /// <summary>
+    /// Convert speed and zRotation to the max or min distance.
+    /// </summary>
     public class DistanceConverter : IMultiValueConverter
     {
         public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
@@ -107,6 +115,9 @@ namespace ProjetSI
         }
     }
 
+    /// <summary>
+    /// Convert point to its text representation.
+    /// </summary>
     public class TextConverter : IMultiValueConverter
     {
 
@@ -116,7 +127,7 @@ namespace ProjetSI
             {
                 Point p = (Point)value[0];
                 Point center = (Point)value[1];
-                Point pos = new Point(p.X - center.X, center.Y - p.Y) - new Vector(MainVM.ballSize, MainVM.ballSize);
+                Point pos = new Point(p.X - center.X, p.Y - center.Y) - new Vector(MainVM.ballSize, MainVM.ballSize);
                 return $"x={Round(pos.X, 1)}, y={Round(pos.Y, 1)}";
             }
             catch (Exception ex)
@@ -131,6 +142,9 @@ namespace ProjetSI
         }
     }
 
+    /// <summary>
+    /// Get Position in animation from points and time.
+    /// </summary>
     public class Pos2DConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
@@ -143,7 +157,7 @@ namespace ProjetSI
                 if (parameter is string)
                 {
                     if (parameter.ToString().Contains("m"))
-                        pt = new Point3D(pt.X / 100, pt.Y / 100, pt.Y / 100);
+                        pt = new Point3D(pt.X / 100, pt.Y / 100, pt.Z / 100);
                 }
                 return pt;
             }
@@ -156,7 +170,33 @@ namespace ProjetSI
         }
     }
 
+    /// <summary>
+    /// Convert rotations and time into a rotation angle.
+    /// </summary>
     public class AngleTConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            int t = 0;
+            Vector3D omega = new Vector3D();
+            try
+            {
+
+                t = (int)values[0];
+                List<Vector3D> speeds = (List<Vector3D>)values[1];
+                omega = speeds[t];
+            }
+            catch { }
+            return omega;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class SpeedConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
@@ -166,10 +206,17 @@ namespace ProjetSI
             {
 
                 t = (int)values[0];
-                speed = new Vector3D((double)values[1], (double)values[2], (double)values[3]);
+                List<Vector3D> speeds = (List<Vector3D>)values[1];
+                speed = speeds[t];
             }
             catch { }
-            return GetRotation(t, speed);
+            if (parameter.ToString() == "x")
+                return speed.X;
+            if (parameter.ToString() == "y")
+                return speed.Y;
+            if (parameter.ToString() == "z")
+                return speed.Z;
+            return speed;
         }
 
         public object[] ConvertBack(object value, Type[] targetType, object parameter, CultureInfo culture)
@@ -178,6 +225,9 @@ namespace ProjetSI
         }
     }
 
+    /// <summary>
+    /// Base converter, is created with methods.
+    /// </summary>
     public class BaseConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -203,6 +253,9 @@ namespace ProjetSI
         }
     }
 
+    /// <summary>
+    /// Multi version of the base converter.
+    /// </summary>
     public class BaseMultiConverter : IMultiValueConverter
     {
         public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
@@ -228,6 +281,9 @@ namespace ProjetSI
         }
     }
 
+    /// <summary>
+    /// Convert bool in whatever is the value of True and False value.
+    /// </summary>
     public class ButtonConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -246,6 +302,9 @@ namespace ProjetSI
         }
     }
 
+    /// <summary>
+    /// Negate a number.
+    /// </summary>
     public class NegateConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -256,6 +315,28 @@ namespace ProjetSI
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return -(double)value;
+        }
+    }
+
+    public class ModelConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            double angle = (double)value;
+            double x = GetTigeLength(angle);
+
+            double beta = GetBeta(angle);
+            Vector3D d = (x - 27) * new Vector3D(0, Cos(55.2 * PI / 180), -Sin(55.2 * PI / 180));
+            if (parameter?.ToString() == "z")
+                return d.Z / 100;
+            if (parameter?.ToString() == "y")
+                return d.Y / 100;
+            return beta;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 }

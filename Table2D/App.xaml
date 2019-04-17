@@ -17,5 +17,7 @@
         <local:AngleTConverter x:Key="angle"></local:AngleTConverter>
         <local:ButtonConverter True="Arrêter" False="Commencer" x:Key="startStop"></local:ButtonConverter>
         <local:NegateConverter x:Key="negate"></local:NegateConverter>
+        <local:SpeedConverter x:Key="speed"></local:SpeedConverter>
+        <local:ModelConverter x:Key="model"></local:ModelConverter>
     </Application.Resources>
 </Application>

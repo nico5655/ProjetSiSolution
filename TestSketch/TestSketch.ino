@@ -82,7 +82,7 @@ void loop() {
 	float rps = (100 / t);
 	Serial.println("Turning ended in " + String(t) + "s, speed: " + String(rps) + "rps");
 	delay(5000);*/
-	/*if (millis() - timeold >= 1000)
+	/*if (millis() - timeold >= 1000
 	{
 		rps = (half_revolutions / ((millis() - timeold) / 1000.0));
 		Serial.println(String(value) + " ;" + String(rps));

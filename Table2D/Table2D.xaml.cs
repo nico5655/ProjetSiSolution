@@ -27,7 +27,9 @@ namespace ProjetSI
             InitializeComponent();
         }
 
-
+        /// <summary>
+        /// Update the position in the textblock.
+        /// </summary>
         public ICommand UpdatePos
         {
             get { return (ICommand)GetValue(UpdatePosProperty); }
@@ -38,6 +40,10 @@ namespace ProjetSI
             DependencyProperty.Register("UpdatePos", typeof(ICommand), typeof(Table2D), new PropertyMetadata());
 
         private Point mousePos;
+
+        /// <summary>
+        /// Mouse 2D position.
+        /// </summary>
         public Point MousePos
         {
             get => mousePos;
