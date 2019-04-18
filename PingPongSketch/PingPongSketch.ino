@@ -11,14 +11,18 @@ const double r = 5;
 double speed = 0;
 double length = 14;//default length
 double angle = 90;//default downAngle
+const double k = 4.574e-2;//N.m/A
+const double Umax = 11.09;//V
+const double I = 0.180;//A
+const double R = 18.5;//Ohms
 int ballDropperPin = 9;
 int bottomAnglePin = 10;
 Servo ballDropper;
 Servo bottomAngle;
 Adafruit_MotorShield AFMS = Adafruit_MotorShield();
-Adafruit_DCMotor *leftMotor = AFMS.getMotor(1);
-Adafruit_DCMotor *rightMotor = AFMS.getMotor(2);
-Adafruit_StepperMotor *tigeStepper = AFMS.getStepper(200, 2);
+Adafruit_DCMotor *leftMotor = AFMS.getMotor(3);
+Adafruit_DCMotor *rightMotor = AFMS.getMotor(4);
+Adafruit_StepperMotor *tigeStepper = AFMS.getStepper(200, 1);
 
 uint16_t getSteps(double length)
 {
@@ -27,8 +31,9 @@ uint16_t getSteps(double length)
 
 uint8_t toPmw(double speed)
 {
-	double rps = speed / (2 * PI * r);
-	return (uint8_t)(10 * (rps + 2));
+	double rds = (speed / r);
+	double alpha = (R*I + k * rds) / Umax;
+	return (uint8_t)(alpha * 255);
 }
 
 void start() {
@@ -71,9 +76,14 @@ void setSpeed(double value) {
 void setLength(double value) {//longueur tige filetée
 	if (length != value)
 	{
+		uint16_t steps = getSteps(value - length);
 		length = value;
+		uint8_t direction = FORWARD;
+		if (steps < 0)
+			direction = BACKWARD;
+		steps = abs(steps);
 		Serial.println("Setting length to " + String(value));
-		tigeStepper->step(getSteps(value), FORWARD, DOUBLE);
+		tigeStepper->step(steps, direction, DOUBLE);
 		delay(5000);
 	}
 	Serial.println("done");
