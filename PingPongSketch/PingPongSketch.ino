@@ -38,8 +38,8 @@ uint8_t toPmw(double speed)
 
 void start() {
 	Serial.println("starting");
-	leftMotor->run(FORWARD);
-	rightMotor->run(FORWARD);
+	leftMotor->run(BACKWARD);
+	rightMotor->run(BACKWARD);
 	delay(50);
 	Serial.println("done");
 }
