@@ -9,20 +9,20 @@
 
 const double r = 5;
 double speed = 0;
-double length = 28.8;//25.6; default length
+double length = 25.6; //28.8 default length
 double angle = 90;//default downAngle
 const double k = 4.574e-2;//N.m/A
 const double Umax = 11.09;//V
 const double I = 0.180;//A
 const double R = 18.5;//Ohms
 int ballDropperPin = 9;
-int bottomAnglePin = 10;
 Servo ballDropper;
-Servo bottomAngle;
-Adafruit_MotorShield AFMS = Adafruit_MotorShield();
+Adafruit_MotorShield AFMS = Adafruit_MotorShield(0x60);
+Adafruit_MotorShield AFMSBot = Adafruit_MotorShield(0x61);
 Adafruit_DCMotor *leftMotor = AFMS.getMotor(3);
 Adafruit_DCMotor *rightMotor = AFMS.getMotor(4);
 Adafruit_StepperMotor *tigeStepper = AFMS.getStepper(200, 1);
+Adafruit_StepperMotor *bottomStepper = AFMSBot.getStepper(200, 1);
 
 uint16_t getSteps(double length)
 {
@@ -77,7 +77,7 @@ void setLength(double value) {//longueur tige filetée
 	if (length != value)
 	{
 		uint16_t steps = getSteps(value - length);
-		Serial.println("Setting length to " + String(value) + "steps: " + String(steps) + " direction " + String(value - length));
+		Serial.println("Setting length to " + String(value) + " steps: " + String(steps) + " direction " + String(value - length));
 		uint8_t direction = BACKWARD;
 		if (value < length)
 		{
@@ -85,7 +85,7 @@ void setLength(double value) {//longueur tige filetée
 		}
 		length = value;
 		tigeStepper->step(steps, direction, DOUBLE);
-		delay(5000);
+		delay(2000);//5000
 	}
 	Serial.println("done");
 }
@@ -94,8 +94,17 @@ void setAngle(double value) {
 	if (angle != value)
 	{
 		Serial.println("Setting angle to " + String(value));
+		double diff = angle - value;
+		Serial.println("diff is " + String(diff));
+		uint16_t steps = (uint16_t)(int(abs(diff / 1.8)));
+		uint8_t direction = FORWARD;
+		if (diff < 0)
+		{
+			direction = BACKWARD;
+			Serial.println("changing");
+		}
+		bottomStepper->step(steps, direction, DOUBLE);
 		angle = value;
-		bottomAngle.write(value);
 		delay(2000);
 	}
 	Serial.println("done");
@@ -104,9 +113,10 @@ void setAngle(double value) {
 void setup() {
 	Serial.begin(9600);
 	AFMS.begin();
+	AFMSBot.begin();
 	tigeStepper->setSpeed(60);
+	bottomStepper->setSpeed(60);
 	ballDropper.attach(ballDropperPin);
-	bottomAngle.attach(bottomAnglePin);
 	//init operations
 }
 
