@@ -44,15 +44,15 @@ namespace ProjetSI
         /// <summary>
         /// D length on the model (cm).
         /// </summary>
-        const double D = 21.4;//11.154;
+        const double D = 20.0;//11.154;CD
         /// <summary>
         /// B length on the model (cm).
         /// </summary>
-        const double B = 22.85;//12.11;
+        const double B = 11.0;//12.11;
         /// <summary>
         /// K length on the model (cm).
         /// </summary>
-        const double K = 11.6;
+        const double K = 11.0;//BC
         /// <summary>
         /// Drag coefficient (S.I).
         /// </summary>

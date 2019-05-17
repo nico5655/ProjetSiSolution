@@ -9,7 +9,7 @@
 
 const double r = 5;
 double speed = 0;
-double length = 14;//default length
+double length = 28.8;//25.6; default length
 double angle = 90;//default downAngle
 const double k = 4.574e-2;//N.m/A
 const double Umax = 11.09;//V
@@ -26,7 +26,7 @@ Adafruit_StepperMotor *tigeStepper = AFMS.getStepper(200, 1);
 
 uint16_t getSteps(double length)
 {
-	return length;
+	return (uint16_t)(int(abs(length*10*200)));
 }
 
 uint8_t toPmw(double speed)
@@ -77,12 +77,13 @@ void setLength(double value) {//longueur tige filetée
 	if (length != value)
 	{
 		uint16_t steps = getSteps(value - length);
+		Serial.println("Setting length to " + String(value) + "steps: " + String(steps) + " direction " + String(value - length));
+		uint8_t direction = BACKWARD;
+		if (value < length)
+		{
+			direction = FORWARD;
+		}
 		length = value;
-		uint8_t direction = FORWARD;
-		if (steps < 0)
-			direction = BACKWARD;
-		steps = abs(steps);
-		Serial.println("Setting length to " + String(value));
 		tigeStepper->step(steps, direction, DOUBLE);
 		delay(5000);
 	}
@@ -103,7 +104,7 @@ void setAngle(double value) {
 void setup() {
 	Serial.begin(9600);
 	AFMS.begin();
-	tigeStepper->setSpeed(30);
+	tigeStepper->setSpeed(60);
 	ballDropper.attach(ballDropperPin);
 	bottomAngle.attach(bottomAnglePin);
 	//init operations
