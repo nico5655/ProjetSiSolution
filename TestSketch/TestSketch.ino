@@ -18,7 +18,7 @@ Adafruit_MotorShield AFMStop = Adafruit_MotorShield();
 Adafruit_StepperMotor *leftShoutStepper = AFMStop.getStepper(200, 1);
 Adafruit_DCMotor *myMotor = AFMStop.getMotor(3);
 Adafruit_DCMotor *myMotor1 = AFMStop.getMotor(4);
-
+Servo servo = Servo();
 
 volatile byte half_revolutions;
 double rps;
@@ -34,19 +34,21 @@ void setup() {
 	//AFMSbot.begin();
 	AFMStop.begin();
 	Serial.begin(9600);
+	//servo.attach(10);
 	//TWBR = ((F_CPU / 400000l) - 16) / 2;
-	leftShoutStepper->setSpeed(aimSpeed);
+	leftShoutStepper->setSpeed(6);
 }
 int value = 50;
 int previous = 0;
 // the loop function runs over and over again until power down or reset
 void loop() {
-	Serial.println("turning begin");
-	leftShoutStepper->setSpeed(60);
-	leftShoutStepper->step(2000, FORWARD, DOUBLE);
-	delay(10000);
-	leftShoutStepper->step(2000, BACKWARD, DOUBLE);
-	delay(10000);
+	//Serial.println("turning begin");
+	leftShoutStepper->step(50, FORWARD, DOUBLE);
+	//servo.write(90);
+	delay(1000);
+	leftShoutStepper->step(50, BACKWARD, DOUBLE);
+	//servo.write(0);
+	delay(1000);
 	/*float t1 = millis();
 	leftShoutStepper->step(20000, FORWARD, DOUBLE);
 	float t2 = millis();

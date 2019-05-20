@@ -3,19 +3,22 @@
  Created:	01/10/2018 11:09:01
  Author:	Megaport
 */
+#include <MultiStepper.h>
+#include <AccelStepper.h>
 #include <Adafruit_MotorShield.h>
 #include <Wire.h>
 #include <Servo.h>
 
+
 const double r = 5;
 double speed = 0;
-double length = 25.6; //28.8 default length
+double length = 25.2; //25.6 and 28.8 default length
 double angle = 90;//default downAngle
 const double k = 4.574e-2;//N.m/A
 const double Umax = 11.09;//V
 const double I = 0.180;//A
 const double R = 18.5;//Ohms
-int ballDropperPin = 9;
+int ballDropperPin = 10;
 Servo ballDropper;
 Adafruit_MotorShield AFMS = Adafruit_MotorShield(0x60);
 Adafruit_MotorShield AFMSBot = Adafruit_MotorShield(0x61);
@@ -23,6 +26,15 @@ Adafruit_DCMotor *leftMotor = AFMS.getMotor(3);
 Adafruit_DCMotor *rightMotor = AFMS.getMotor(4);
 Adafruit_StepperMotor *tigeStepper = AFMS.getStepper(200, 1);
 Adafruit_StepperMotor *bottomStepper = AFMSBot.getStepper(200, 1);
+void forwardStep()
+{
+	bottomStepper->onestep(FORWARD, MICROSTEP);
+}
+void backwardStep()
+{
+	bottomStepper->onestep(BACKWARD, MICROSTEP);
+}
+AccelStepper bStepper(forwardStep, backwardStep);
 
 uint16_t getSteps(double length)
 {
@@ -96,16 +108,21 @@ void setAngle(double value) {
 		Serial.println("Setting angle to " + String(value));
 		double diff = angle - value;
 		Serial.println("diff is " + String(diff));
-		uint16_t steps = (uint16_t)(int(abs(diff / 1.8)));
+		double diff1= abs(diff / 1.8)*(6/2.3);
 		uint8_t direction = FORWARD;
 		if (diff < 0)
 		{
 			direction = BACKWARD;
 			Serial.println("changing");
 		}
-		bottomStepper->step(steps, direction, DOUBLE);
+		double diff2 = abs(angle - 90);
+		double k = 1 + (diff2 / 17.5)*0.95;
+		Serial.println(k);
+		uint16_t steps = (uint16_t)(int(diff1));
+		bottomStepper->step(steps, direction, MICROSTEP);
 		angle = value;
 		delay(2000);
+		bottomStepper->release();
 	}
 	Serial.println("done");
 }
@@ -114,8 +131,8 @@ void setup() {
 	Serial.begin(9600);
 	AFMS.begin();
 	AFMSBot.begin();
-	tigeStepper->setSpeed(60);
-	bottomStepper->setSpeed(60);
+	tigeStepper->setSpeed(40);
+	bottomStepper->setSpeed(1);
 	ballDropper.attach(ballDropperPin);
 	//init operations
 }
