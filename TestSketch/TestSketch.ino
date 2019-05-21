@@ -15,10 +15,10 @@ const uint8_t rightStepType = DOUBLE;
 
 
 Adafruit_MotorShield AFMStop = Adafruit_MotorShield();
-//Adafruit_StepperMotor *leftShoutStepper = AFMStop.getStepper(200, 1);
+Adafruit_StepperMotor *leftShoutStepper = AFMStop.getStepper(200, 1);
 Adafruit_DCMotor *myMotor = AFMStop.getMotor(3);
 Adafruit_DCMotor *myMotor1 = AFMStop.getMotor(4);
-
+Servo servo = Servo();
 
 volatile byte half_revolutions;
 double rps;
@@ -34,47 +34,21 @@ void setup() {
 	//AFMSbot.begin();
 	AFMStop.begin();
 	Serial.begin(9600);
+	//servo.attach(10);
 	//TWBR = ((F_CPU / 400000l) - 16) / 2;
-	/*
-	ballShouter.attach(9);
-	bottomAngle.attach(10);
-	aimControlStepper->setSpeed(aimSpeed);*/
-	//pinMode(2, INPUT);
-	//attachInterrupt(digitalPinToInterrupt(2), magnet_detect, RISING);
-	myMotor->setSpeed(140);
-	myMotor->run(BACKWARD);
-	myMotor1->setSpeed(140);
-	myMotor1->run(BACKWARD);
+	leftShoutStepper->setSpeed(6);
 }
 int value = 50;
 int previous = 0;
 // the loop function runs over and over again until power down or reset
 void loop() {
-	if (Serial.available())
-	{
-		int value = Serial.read();
-		Serial.println("setting value");
-		if (value < 0)
-		{
-			value = -value;
-			myMotor->setSpeed(value);
-			myMotor1->setSpeed(value);
-			myMotor->run(BACKWARD);
-			myMotor1->run(BACKWARD);
-		}
-		else
-		{
-			myMotor->setSpeed(value);
-			myMotor1->setSpeed(value);
-			myMotor->run(FORWARD);
-			myMotor1->run(FORWARD);
-		}
-	}
 	//Serial.println("turning begin");
-	//leftShoutStepper->setSpeed(180);
-	//leftShoutStepper->step(2000, FORWARD, DOUBLE);
-	//leftShoutStepper->step(2000, BACKWARD, DOUBLE);
-	//delay(1000);
+	leftShoutStepper->step(50, FORWARD, DOUBLE);
+	//servo.write(90);
+	delay(1000);
+	leftShoutStepper->step(50, BACKWARD, DOUBLE);
+	//servo.write(0);
+	delay(1000);
 	/*float t1 = millis();
 	leftShoutStepper->step(20000, FORWARD, DOUBLE);
 	float t2 = millis();

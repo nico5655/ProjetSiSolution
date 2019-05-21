@@ -116,7 +116,7 @@
                     <TextBlock Grid.Column="1" Text="{Binding Path=FPS, StringFormat=0\{0:#.##\} FPS}"></TextBlock>
                     <TextBlock Grid.Column="1" Grid.Row="1">
                         <TextBlock.Text>
-                            <MultiBinding Converter="{StaticResource ResourceKey=speed}" ConverterParameter="x" StringFormat=" {0:#.##} m/s">
+                            <MultiBinding Converter="{StaticResource ResourceKey=speed}" ConverterParameter="x" StringFormat=" {0:#.##} cm/s">
                                 <Binding Path="T"></Binding>
                                 <Binding Path="Speeds"></Binding>
                             </MultiBinding>
@@ -124,7 +124,7 @@
                     </TextBlock>
                     <TextBlock Grid.Column="1" Grid.Row="2">
                         <TextBlock.Text>
-                            <MultiBinding Converter="{StaticResource ResourceKey=speed}" ConverterParameter="y" StringFormat=" {0:#.##} m/s">
+                            <MultiBinding Converter="{StaticResource ResourceKey=speed}" ConverterParameter="y" StringFormat=" {0:#.##} cm/s">
                                 <Binding Path="T"></Binding>
                                 <Binding Path="Speeds"></Binding>
                             </MultiBinding>
@@ -132,7 +132,7 @@
                     </TextBlock>
                     <TextBlock Grid.Column="1" Grid.Row="3">
                         <TextBlock.Text>
-                            <MultiBinding Converter="{StaticResource ResourceKey=speed}" ConverterParameter="z" StringFormat=" {0:#.##} m/s">
+                            <MultiBinding Converter="{StaticResource ResourceKey=speed}" ConverterParameter="z" StringFormat=" {0:#.##} cm/s">
                                 <Binding Path="T"></Binding>
                                 <Binding Path="Speeds"></Binding>
                             </MultiBinding>

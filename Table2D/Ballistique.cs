@@ -44,15 +44,18 @@ namespace ProjetSI
         /// <summary>
         /// D length on the model (cm).
         /// </summary>
-        const double D = 21.4;//11.154;
+        const double D = 20.0;//11.154;CD
+        const double D1 = 21.4;
         /// <summary>
         /// B length on the model (cm).
         /// </summary>
-        const double B = 22.85;//12.11;
+        const double B = 11.0;//12.11;
+        const double B1 = 22.85;//12.11;
         /// <summary>
         /// K length on the model (cm).
         /// </summary>
-        const double K = 11.6;
+        const double K = 11.0;//BC
+        const double K1 = 11.6;
         /// <summary>
         /// Drag coefficient (S.I).
         /// </summary>
@@ -87,15 +90,21 @@ namespace ProjetSI
             return x;//tige len formula, calculated using Al-Kachi theorem.
         }
 
+        public static double GetTigeLength2(double shoutAngle)
+        {
+            double x = Sqrt(Pow(D1, 2) + 2 * Sin(shoutAngle * PI / 180) * D1 * K1 + Pow(K1, 2));
+            return x;//tige len formula, calculated using Al-Kachi theorem.
+        }
+
         /// <summary>
         /// Calculates model's beta angle.
         /// </summary>
         /// <param name="alpha">Model shout angle (°).</param>
         /// <returns></returns>
-        public static double GetBeta(double alpha)
+        public static double GetBeta2(double alpha)
         {
-            double x = GetTigeLength(alpha);
-            double cos = (x * x - D * D + Pow(B - K, 2)) / (2 * (B - K) * x);//model's beta formula
+            double x = GetTigeLength2(alpha);
+            double cos = (x * x - D1 * D1 + Pow(B1 - K1, 2)) / (2 * (B1 - K1) * x);//model's beta formula
             return Acos(cos) * 180 / PI;
         }
 

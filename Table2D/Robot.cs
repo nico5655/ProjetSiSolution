@@ -160,11 +160,11 @@ namespace ProjetSI
         /// <summary>
         /// Sets the ball shoot angle on the model.
         /// </summary>
-        /// <param name="angle">Ballistic shoot angle (will be converted to TigeLength).</param>
+        /// <param name="angle">Ballistic shoot angle in ° (will be converted to TigeLength).</param>
         /// <returns></returns>
         public bool SetShootAngle(double angle)
         {
-            double len = Ballistique.GetTigeLength(angle);
+            double len = Ballistique.GetTigeLength(angle + 7);
             return WriteLine($"length={len.ToString().Replace(",", ".")};");
         }
 
