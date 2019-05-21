@@ -323,9 +323,9 @@ namespace ProjetSI
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             double angle = (double)value;
-            double x = GetTigeLength(angle);
+            double x = GetTigeLength2(angle);
 
-            double beta = GetBeta(angle);
+            double beta = GetBeta2(angle);
             Vector3D d = (x - 27) * new Vector3D(0, Cos(55.2 * PI / 180), -Sin(55.2 * PI / 180));
             if (parameter?.ToString() == "z")
                 return d.Z / 100;
