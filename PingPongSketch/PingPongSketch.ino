@@ -12,7 +12,7 @@
 
 const double r = 5;
 double speed = 0;
-double length = 27.2; //25.6 and 28.8 default length
+double length = 26.2;//25.6 and 28.8 default length
 double angle = 90;//default downAngle
 const double k = 4.574e-2;//N.m/A
 const double Umax = 11.09;//V
@@ -97,6 +97,7 @@ void setLength(double value) {//longueur tige filetée
 		}
 		length = value;
 		tigeStepper->step(steps, direction, DOUBLE);
+		tigeStepper->release();
 		delay(2000);//5000
 	}
 	Serial.println("done");

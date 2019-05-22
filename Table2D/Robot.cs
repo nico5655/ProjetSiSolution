@@ -68,7 +68,7 @@ namespace ProjetSI
         private Action action = () => { };
 
         /// <summary>
-        /// Is the transmition done?
+        /// Is the transmission done?
         /// </summary>
         public bool Done { get; set; }
 
